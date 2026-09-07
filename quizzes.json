@@ -1,0 +1,38 @@
+[
+  {
+    "id": "1788711079211",
+    "studentId": "test_user_a",
+    "subject": "Physics",
+    "topic": "Quantum Mechanics",
+    "difficulty": "Medium",
+    "numQuestions": 5,
+    "score": 50,
+    "percentage": 50,
+    "correctCount": 2,
+    "incorrectCount": 3,
+    "skippedCount": 0,
+    "timeTaken": 100,
+    "mode": "Practice",
+    "completedAt": "2026-09-06T16:11:19.211Z",
+    "date": "6/9/2026",
+    "questionBreakdown": []
+  },
+  {
+    "id": "1788711009251",
+    "studentId": "test_user_a",
+    "subject": "Physics",
+    "topic": "Quantum Mechanics",
+    "difficulty": "Medium",
+    "numQuestions": 5,
+    "score": 2,
+    "percentage": 40,
+    "correctCount": 0,
+    "incorrectCount": 0,
+    "skippedCount": 0,
+    "timeTaken": 0,
+    "mode": "Practice",
+    "completedAt": "2026-09-06T16:10:09.251Z",
+    "date": "6/9/2026",
+    "questionBreakdown": []
+  }
+]

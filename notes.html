@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Notes Workspace - Smart Education AI</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="auth-guard.js"></script>
+    <style>
+        .filter-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .filter-bar input, .filter-bar select {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: #fff;
+            padding: 10px 14px;
+            font-size: 13px;
+            outline: none;
+        }
+        .filter-bar input { flex: 1; min-width: 200px; }
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 22px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 3D Ambient Background Light Orbs -->
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+
+    <!-- HEADER -->
+    <header class="dashboard-header">
+        <div class="nav-container">
+            <a href="dashboard.html" class="dashboard-logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                Smart Education AI
+            </a>
+            <ul class="nav-links">
+                <li><a href="dashboard.html">📊 Dashboard</a></li>
+                <li><a href="ai-tutor.html">🤖 AI Tutor</a></li>
+                <li><a href="leaderboard.html">🏆 Leaderboard</a></li>
+                <li><a href="pdf-assistant.html">📄 PDF Assistant</a></li>
+                <li><a href="notes.html" class="active">📝 AI Notes</a></li>
+                <li><a href="quiz.html">🎯 Quiz</a></li>
+                <li><a href="profile.html">👤 Profile</a></li>
+            </ul>
+            <div class="user-area">
+                <a href="dashboard.html" class="back-dashboard">← Dashboard</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN WORKSPACE CONTAINER -->
+    <main class="container" style="padding-top: 36px; padding-bottom: 60px;">
+        <div style="margin-bottom: 28px;">
+            <h1>📝 AI Notes Workspace</h1>
+            <p>Generate comprehensive, publication-grade academic revision notes with Gemini AI, edit in real-time, and manage your study library.</p>
+        </div>
+
+        <!-- 2-COLUMN WORKSPACE GRID -->
+        <div class="notes-workspace-grid">
+            <!-- LEFT: AI NOTE GENERATOR FORM -->
+            <section class="ai-notes-generator-card">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+                    <h2 style="font-size: 18px; color: var(--text-bright); margin: 0;">⚡ AI Note Generator</h2>
+                    <span style="font-size: 11px; background: rgba(99, 102, 241, 0.2); color: #93c5fd; padding: 4px 10px; border-radius: 12px; border: 1px solid rgba(99, 102, 241, 0.4); font-weight: 700;">PRO AI</span>
+                </div>
+
+                <form id="aiNotesForm" style="display: flex; flex-direction: column; gap: 16px;">
+                    <div>
+                        <label for="noteSubject">Subject Domain</label>
+                        <select id="noteSubject" required>
+                            <option value="Computer Science">Computer Science 💻</option>
+                            <option value="Mathematics">Mathematics 📐</option>
+                            <option value="Physics">Physics ⚛️</option>
+                            <option value="Chemistry">Chemistry 🧪</option>
+                            <option value="Biology">Biology 🧬</option>
+                            <option value="English">English Literature 📖</option>
+                            <option value="Other">Other / General 📚</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="noteTopic">Study Topic / Title *</label>
+                        <input type="text" id="noteTopic" placeholder="e.g. Binary Search Trees, Quantum Mechanics" required maxlength="200">
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div>
+                            <label for="noteLanguage">Language</label>
+                            <select id="noteLanguage">
+                                <option value="English">English</option>
+                                <option value="Hinglish">Hinglish (Hindi+English)</option>
+                                <option value="Hindi">Hindi (हिंदी)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="noteType">Note Type</label>
+                            <select id="noteType">
+                                <option value="Detailed Notes">Detailed Notes</option>
+                                <option value="Quick Revision">Quick Revision</option>
+                                <option value="Exam Notes">Exam High-Yield</option>
+                                <option value="Concept Notes">Concept Breakdown</option>
+                                <option value="Formula Sheet">Formula Sheet</option>
+                                <option value="Short Summary">Short Summary</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div>
+                            <label for="noteDifficulty">Difficulty</label>
+                            <select id="noteDifficulty">
+                                <option value="Intermediate">Intermediate</option>
+                                <option value="Beginner">Beginner</option>
+                                <option value="Advanced">Advanced</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="noteLength">Depth / Length</label>
+                            <select id="noteLength">
+                                <option value="Medium">Medium</option>
+                                <option value="Short">Short</option>
+                                <option value="Detailed">Detailed</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="generateBtn" class="cta-btn" style="width: 100%; margin-top: 8px; justify-content: center;">
+                        ✨ Generate AI Notes
+                    </button>
+                </form>
+            </section>
+
+            <!-- RIGHT: AI NOTE VIEWER & EDITOR WORKSPACE -->
+            <section class="ai-note-viewer-card">
+                <!-- Action Toolbar -->
+                <div class="note-actions-toolbar" id="noteActionsToolbar" style="display: none;">
+                    <button type="button" class="btn-save-note" id="saveNoteBtn" onclick="saveActiveNote()">💾 Save to Library</button>
+                    <button type="button" onclick="copyNoteContent()">📋 Copy</button>
+                    <button type="button" onclick="toggleEditMode()" id="editToggleBtn">✏️ Edit</button>
+                    <button type="button" onclick="regenerateActiveNote()">🔄 Regenerate</button>
+                    <button type="button" onclick="window.print()">🖨️ Print PDF</button>
+                    <button type="button" id="deleteActiveBtn" onclick="deleteActiveNote()" style="display: none; background: rgba(239,68,68,0.15); color: #fca5a5; border-color: rgba(239,68,68,0.3);">🗑️ Delete</button>
+                </div>
+
+                <!-- Main Content & Viewer Area -->
+                <div id="noteDisplayArea" class="markdown-body">
+                    <!-- Default Empty State -->
+                    <div class="empty-state-card" style="text-align: center; padding: 60px 20px; background: transparent; border: none; box-shadow: none;">
+                        <div style="width: 64px; height: 64px; margin: 0 auto 20px; background: rgba(99, 102, 241, 0.15); border-radius: 20px; border: 1px solid rgba(99, 102, 241, 0.3); display: flex; align-items: center; justify-content: center; color: var(--accent-indigo);">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                        </div>
+                        <h3 style="font-size: 20px; margin-bottom: 8px; color: #ffffff;">AI Notes Workspace</h3>
+                        <p style="color: var(--text-muted); max-width: 440px; margin: 0 auto 20px; font-size: 14px;">Enter a subject and study topic on the left to generate structured revision notes with AI. Or select a saved note from your library below.</p>
+                    </div>
+                </div>
+
+                <!-- Hidden Textarea for Edit Mode -->
+                <textarea id="noteEditTextarea" style="display: none; width: 100%; height: 420px; background: rgba(15, 23, 42, 0.9); border: 1px solid var(--accent-blue); border-radius: 12px; color: #ffffff; padding: 16px; font-family: inherit; font-size: 14px; line-height: 1.6; outline: none;"></textarea>
+            </section>
+        </div>
+
+        <!-- SAVED NOTES LIBRARY SECTION -->
+        <section style="margin-top: 50px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+                <h2 style="font-size: 22px; color: var(--text-bright); margin: 0;">📚 My Saved Notes Library</h2>
+                <span id="savedNotesCount" style="color: var(--text-sub); font-size: 14px; font-weight: 600;">0 Saved Notes</span>
+            </div>
+
+            <!-- Filter & Search Controls -->
+            <div class="filter-bar">
+                <input type="text" id="noteSearchInput" placeholder="🔍 Search notes by title, topic, or content..." oninput="filterNotes()">
+                <select id="subjectFilter" onchange="filterNotes()">
+                    <option value="ALL">All Subjects</option>
+                    <option value="Computer Science">Computer Science</option>
+                    <option value="Mathematics">Mathematics</option>
+                    <option value="Physics">Physics</option>
+                    <option value="Chemistry">Chemistry</option>
+                    <option value="Biology">Biology</option>
+                    <option value="English">English</option>
+                    <option value="Other">Other</option>
+                </select>
+                <select id="typeFilter" onchange="filterNotes()">
+                    <option value="ALL">All Types</option>
+                    <option value="Detailed Notes">Detailed Notes</option>
+                    <option value="Quick Revision">Quick Revision</option>
+                    <option value="Exam Notes">Exam High-Yield</option>
+                    <option value="Concept Notes">Concept Notes</option>
+                    <option value="Formula Sheet">Formula Sheet</option>
+                    <option value="Short Summary">Short Summary</option>
+                </select>
+                <select id="langFilter" onchange="filterNotes()">
+                    <option value="ALL">All Languages</option>
+                    <option value="English">English</option>
+                    <option value="Hinglish">Hinglish</option>
+                    <option value="Hindi">Hindi</option>
+                </select>
+                <select id="sortSelect" onchange="filterNotes()">
+                    <option value="NEWEST">Sort: Newest First</option>
+                    <option value="OLDEST">Sort: Oldest First</option>
+                    <option value="UPDATED">Sort: Recently Updated</option>
+                </select>
+            </div>
+
+            <!-- Notes Grid -->
+            <div id="notesContainer" class="notes-grid"></div>
+        </section>
+    </main>
+
+    <!-- SAAS FOOTER -->
+    <footer class="saas-footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <span>© 2026 Smart Education AI. All rights reserved.</span>
+                <span>AI Notes • Learn • Practice • Excel</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script src="notes.js"></script>
+</body>
+</html>

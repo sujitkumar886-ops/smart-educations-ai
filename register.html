@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Free Account | Smart Education AI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 3D Ambient Background Light Orbs -->
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+
+    <div class="auth-container">
+        <div class="auth-box glass-card" style="max-width: 480px;">
+            <div class="auth-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+            </div>
+            <h1>Create Free Account</h1>
+            <p>Start your intelligent AI learning journey today</p>
+
+            <form id="registerForm">
+                <div>
+                    <label for="registerName">Full Name</label>
+                    <input type="text" id="registerName" placeholder="e.g. Alice Tester" required>
+                </div>
+
+                <div>
+                    <label for="registerEmail">Email Address</label>
+                    <input type="email" id="registerEmail" placeholder="e.g. alice@example.com" required>
+                </div>
+
+                <div>
+                    <label for="registerPassword">Password (min 6 characters)</label>
+                    <input type="password" id="registerPassword" placeholder="Create a strong password" required minlength="6">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                    <div>
+                        <label for="registerCourse">Course</label>
+                        <input type="text" id="registerCourse" placeholder="B.Tech" value="B.Tech">
+                    </div>
+                    <div>
+                        <label for="registerCollege">College</label>
+                        <input type="text" id="registerCollege" placeholder="PPSU" value="PPSU">
+                    </div>
+                    <div>
+                        <label for="registerSemester">Semester</label>
+                        <input type="text" id="registerSemester" placeholder="3rd" value="3rd">
+                    </div>
+                </div>
+
+                <button type="submit" class="auth-btn" style="width: 100%; margin-top: 10px;">Create Free Account →</button>
+            </form>
+
+            <p class="switch-text">
+                Already registered? <a href="login.html">Sign In Here</a>
+            </p>
+            <div style="text-align: center; margin-top: 15px;">
+                <a href="index.html" class="back-home">← Back to Home Page</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+</body>
+</html>

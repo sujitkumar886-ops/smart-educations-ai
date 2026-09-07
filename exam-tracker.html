@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Countdown Tracker | Smart Education AI</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="auth-guard.js"></script>
+    <style>
+        .exam-form-grid {
+            display: grid;
+            grid-template-columns: 2fr 1.2fr 1fr 1.2fr;
+            gap: 12px;
+        }
+        @media (max-width: 768px) {
+            .exam-form-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 3D Ambient Background Light Orbs -->
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+
+    <header class="dashboard-header">
+        <div class="nav-container">
+            <a href="dashboard.html" class="dashboard-logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                Smart Education AI <span class="badge-tag badge-cs" style="margin-left: 8px;">Exam Tracker</span>
+            </a>
+            <div class="user-area">
+                <a href="dashboard.html" class="back-dashboard">← Dashboard</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 40px; padding-bottom: 60px;">
+        <div style="text-align: center; max-width: 650px; margin: 0 auto 35px;">
+            <h1>⏳ Exam Countdown Tracker</h1>
+            <p>Track your upcoming exam dates and stay fully prepared with dynamic countdown alerts.</p>
+        </div>
+
+        <section class="glass-card" style="max-width: 900px; margin: auto; padding: 30px;">
+            <h2 style="margin-top: 0; margin-bottom: 18px; font-size: 20px; color: #ffffff;">➕ Add Upcoming Exam</h2>
+            <form id="examForm" class="exam-form-grid">
+                <input type="text" id="examSubject" placeholder="Exam / Subject Name (e.g. DBMS)" required>
+                <input type="date" id="examDate" required>
+                <input type="time" id="examTime">
+                <button type="submit" class="ask-btn">+ Track Exam</button>
+            </form>
+
+            <h2 style="margin-top: 30px; margin-bottom: 15px; font-size: 20px; color: #ffffff;">⏳ Upcoming Exams & Countdowns</h2>
+            <div id="examList"></div>
+        </section>
+    </main>
+
+    <footer class="saas-footer">
+        <div class="container">
+            <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+                <span>© 2026 Smart Education AI. All rights reserved.</span>
+                <span>Learn • Practice • Improve • Succeed</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="exam-tracker.js"></script>
+</body>
+</html>

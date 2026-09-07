@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Smart Education AI</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="auth-guard.js"></script>
+</head>
+<body>
+    <!-- 3D Ambient Background Light Orbs -->
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+
+    <!-- ================= HEADER ================= -->
+    <header class="dashboard-header">
+        <div class="nav-container">
+            <a href="dashboard.html" class="dashboard-logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                Smart Education AI
+            </a>
+
+            <!-- Desktop Navigation Links -->
+            <ul class="nav-links">
+                <li><a href="dashboard.html" class="active">📊 Dashboard</a></li>
+                <li><a href="ai-tutor.html">🤖 AI Tutor</a></li>
+                <li><a href="leaderboard.html">🏆 Leaderboard</a></li>
+                <li><a href="pdf-study.html">📄 PDF Study AI</a></li>
+                <li><a href="notes.html">📝 Notes</a></li>
+                <li><a href="quiz.html">🎯 Quiz</a></li>
+                <li><a href="profile.html">👤 Profile</a></li>
+            </ul>
+
+            <div class="user-area">
+                <div class="user-badge">
+                    <div class="user-avatar" id="userInitial">S</div>
+                    <span id="welcomeUser">Good Evening, Student</span>
+                </div>
+                <button onclick="logout()" class="logout-btn">Logout</button>
+                <button class="mobile-nav-toggle" onclick="toggleMobileMenu()">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Drawer Menu -->
+    <div id="mobileMenu" class="mobile-menu-drawer">
+        <a href="dashboard.html">📊 Dashboard</a>
+        <a href="ai-tutor.html">🤖 AI Personal Tutor</a>
+        <a href="leaderboard.html">🏆 XP Leaderboard</a>
+        <a href="pdf-study.html">📄 PDF Study AI</a>
+        <a href="image-solver.html">🖼️ Visual Question Solver</a>
+        <a href="notes.html">📝 Study Notes</a>
+        <a href="quiz.html">🎯 Smart Quiz</a>
+        <a href="study-planner.html">📅 Study Planner</a>
+        <a href="performance.html">📈 Progress & Analytics</a>
+        <a href="teacher-dashboard.html">👨‍🏫 Educator Hub</a>
+        <a href="admin-dashboard.html" id="adminMobileLink" style="display: none;">🛡️ Admin Portal</a>
+        <a href="profile.html">👤 My Profile</a>
+    </div>
+
+    <!-- ================= DASHBOARD MAIN CONTAINER ================= -->
+    <main class="container" style="padding-top: 40px; padding-bottom: 60px;">
+        <!-- SAAS HERO BANNER -->
+        <section class="saas-hero-banner">
+            <div class="hero-greeting">
+                <h1 id="heroGreetingText">Good Evening, Student 👋</h1>
+                <p>Welcome to your intelligent AI-powered study workspace. Track your goals, practice quizzes, and learn smarter.</p>
+            </div>
+            <div class="hero-quick-actions">
+                <a href="ai-tutor.html" class="cta-btn">🤖 Ask AI Tutor →</a>
+                <a href="leaderboard.html" class="explore-btn">🏆 XP Leaderboard</a>
+            </div>
+        </section>
+
+        <!-- QUICK STATS -->
+        <section class="stats">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <h3>Active Subjects</h3>
+                    <svg class="stat-icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                </div>
+                <strong id="statSubjects">0</strong>
+                <p id="statSubjectsSub">Tracked Subjects</p>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <h3>Quizzes Completed</h3>
+                    <svg class="stat-icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </div>
+                <strong id="statQuizzes">0</strong>
+                <p id="statQuizzesSub">Practice Sessions</p>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <h3>Overall Progress</h3>
+                    <svg class="stat-icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                </div>
+                <strong id="statProgress">0%</strong>
+                <p id="statProgressSub">Task & Quiz Mastery</p>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <h3>Study Streak</h3>
+                    <svg class="stat-icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 3.5z"/></svg>
+                </div>
+                <strong id="statStreak">0</strong>
+                <p id="statStreakSub">Consecutive Days</p>
+            </div>
+        </section>
+
+        <!-- LEARNING TOOLS -->
+        <section class="dashboard-features">
+            <h2>AI & Educator SaaS Suite</h2>
+
+            <div class="dashboard-grid">
+                <!-- 1. AI TUTOR -->
+                <div class="dashboard-card">
+                    <svg class="card-icon-svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    <h3>AI Personal Tutor</h3>
+                    <p>Ask complex questions with voice ask, tone selection, and multi-turn context awareness.</p>
+                    <button onclick="window.location.href='ai-tutor.html'">Ask AI Tutor →</button>
+                </div>
+
+                <!-- 2. LEADERBOARD -->
+                <div class="dashboard-card">
+                    <svg class="card-icon-svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg>
+                    <h3>XP Leaderboard & Badges</h3>
+                    <p>Compete with fellow scholars globally, unlock achievement badges, and level up.</p>
+                    <button onclick="window.location.href='leaderboard.html'">View Rankings →</button>
+                </div>
+
+                <!-- 3. PDF STUDY AI -->
+                <div class="dashboard-card">
+                    <svg class="card-icon-svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    <h3>PDF Study AI</h3>
+                    <p>Upload lecture notes, textbooks or study material and let AI turn it into an interactive study workspace.</p>
+                    <button onclick="window.location.href='pdf-study.html'">Study a PDF →</button>
+                </div>
+
+                <!-- 4. IMAGE SOLVER -->
+                <div class="dashboard-card">
+                    <svg class="card-icon-svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    <h3>Visual Question Solver</h3>
+                    <p>Upload math, physics, or code diagram screenshots for step-by-step AI solutions.</p>
+                    <button onclick="window.location.href='image-solver.html'">Solve Image →</button>
+                </div>
+
+                <!-- 5. NOTES -->
+                <div class="dashboard-card">
+                    <svg class="card-icon-svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                    <h3>Study Notes Library</h3>
+                    <p>Organize notes with AI auto-summarization and instant PDF printing/export.</p>
+                    <button onclick="window.location.href='notes.html'">Open Notes →</button>
+                </div>
+
+                <!-- 6. QUIZ -->
+                <div class="dashboard-card">
+                    <svg class="card-icon-svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    <h3>Smart Quiz Practice</h3>
+                    <p>Interactive timed quizzes, dynamic AI question generator, and instant XP rewards.</p>
+                    <button onclick="window.location.href='quiz.html'">Start Quiz →</button>
+                </div>
+
+                <!-- 7. TEACHER PORTAL -->
+                <div class="dashboard-card">
+                    <svg class="card-icon-svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    <h3>Educator & Teacher Hub</h3>
+                    <p>Monitor registered student progress, issue class assignments, and track metrics.</p>
+                    <button onclick="window.location.href='teacher-dashboard.html'">Teacher Portal →</button>
+                </div>
+
+                <!-- 8. ADMIN PORTAL (ADMIN ONLY) -->
+                <div class="dashboard-card" id="adminCard" style="display: none;">
+                    <svg class="card-icon-svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    <h3>Admin Analytics Center</h3>
+                    <p>Manage system parameters, total user metrics, database stats, and role permissions.</p>
+                    <button onclick="window.location.href='admin-dashboard.html'">Admin Portal →</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- COMMERCIAL SAAS FOOTER -->
+    <footer class="saas-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="dashboard.html" class="logo">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                        Smart Education AI
+                    </a>
+                    <p>Empowering scholars with personalized AI tutoring, structured revision notes, and multi-modal study suites.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Learning Suite</h4>
+                    <ul>
+                        <li><a href="ai-tutor.html">AI Personal Tutor</a></li>
+                        <li><a href="pdf-study.html">PDF Study AI</a></li>
+                        <li><a href="image-solver.html">Visual Question Solver</a></li>
+                        <li><a href="quiz.html">Smart Quiz Practice</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Academic Tools</h4>
+                    <ul>
+                        <li><a href="notes.html">Study Notes Library</a></li>
+                        <li><a href="study-planner.html">Study Schedule Planner</a></li>
+                        <li><a href="leaderboard.html">Global XP Leaderboard</a></li>
+                        <li><a href="performance.html">Performance Analytics</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Portals & Account</h4>
+                    <ul>
+                        <li><a href="profile.html">Student Profile</a></li>
+                        <li><a href="teacher-dashboard.html">Educator Hub</a></li>
+                        <li><a href="admin-dashboard.html">Admin Analytics</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Smart Education AI. All rights reserved.</span>
+                <span>Learn • Practice • Improve • Succeed</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ================= JAVASCRIPT ================= -->
+    <script>
+        function getTimeGreeting() {
+            const hour = new Date().getHours();
+            if (hour >= 5 && hour < 12) return "Good Morning";
+            if (hour >= 12 && hour < 17) return "Good Afternoon";
+            return "Good Evening";
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById("mobileMenu");
+            if (menu) menu.classList.toggle("open");
+        }
+
+        // Check Login
+        const isLoggedIn = localStorage.getItem("isLoggedIn");
+        const currentUserStr = localStorage.getItem("student") || localStorage.getItem("currentUser");
+
+        if (isLoggedIn !== "true" || !currentUserStr) {
+            window.location.href = "login.html";
+        }
+
+        let currentUser = null;
+        try { currentUser = JSON.parse(currentUserStr); } catch (e) {}
+
+        if (currentUser && currentUser.name) {
+            const timeGreeting = getTimeGreeting();
+            const welcomeText = `${timeGreeting}, ${currentUser.name}`;
+            
+            const welcomeEl = document.getElementById("welcomeUser");
+            const heroGreetingEl = document.getElementById("heroGreetingText");
+            const initialEl = document.getElementById("userInitial");
+
+            if (welcomeEl) welcomeEl.innerText = welcomeText;
+            if (heroGreetingEl) heroGreetingEl.innerText = welcomeText + " 👋";
+            if (initialEl) initialEl.innerText = (currentUser.name[0] || "S").toUpperCase();
+
+            // Render Admin Control Center ONLY for Admin role
+            if (currentUser.role === "admin") {
+                const adminCard = document.getElementById("adminCard");
+                const adminMobileLink = document.getElementById("adminMobileLink");
+                if (adminCard) adminCard.style.display = "block";
+                if (adminMobileLink) adminMobileLink.style.display = "block";
+            }
+        }
+
+        // Dynamically load Quick Stats for current user with intentional empty states
+        if (currentUser && currentUser.id) {
+            const quizData = JSON.parse(localStorage.getItem(`lastQuizScore_${currentUser.id}`));
+            const quizzesDone = quizData ? 1 : 0;
+            const quizScorePct = quizData ? (quizData.percentage || 0) : 0;
+            const quizStatEl = document.getElementById("statQuizzes");
+            const quizStatSub = document.getElementById("statQuizzesSub");
+
+            if (quizStatEl) quizStatEl.innerText = quizzesDone;
+            if (quizStatSub) {
+                quizStatSub.innerText = quizzesDone === 0 ? "Start a quiz to track performance" : "Practice Sessions";
+            }
+
+            const streakData = JSON.parse(localStorage.getItem(`studyStreakData_${currentUser.id}`));
+            const totalDays = streakData && streakData.dates ? streakData.dates.length : 0;
+            const streakStatEl = document.getElementById("statStreak");
+            const streakStatSub = document.getElementById("statStreakSub");
+
+            if (streakStatEl) streakStatEl.innerText = totalDays;
+            if (streakStatSub) {
+                streakStatSub.innerText = totalDays === 0 ? "Log daily study to build streak" : "Consecutive Days";
+            }
+
+            fetch(`/api/planner/${currentUser.id}`)
+                .then(res => res.json())
+                .then(tasks => {
+                    if (Array.isArray(tasks)) {
+                        const subjects = new Set(tasks.map(t => t.subject).filter(Boolean));
+                        const subEl = document.getElementById("statSubjects");
+                        const subSub = document.getElementById("statSubjectsSub");
+
+                        if (subEl) subEl.innerText = subjects.size;
+                        if (subSub) {
+                            subSub.innerText = subjects.size === 0 ? "Add tasks to track subjects" : "Tracked Subjects";
+                        }
+
+                        const completed = tasks.filter(t => t.completed).length;
+                        const taskPct = tasks.length ? Math.round((completed / tasks.length) * 100) : 0;
+                        const overallPct = Math.round((quizScorePct + taskPct) / (quizData ? 2 : 1));
+                        const progEl = document.getElementById("statProgress");
+                        const progSub = document.getElementById("statProgressSub");
+
+                        if (progEl) progEl.innerText = `${overallPct}%`;
+                        if (progSub) {
+                            progSub.innerText = tasks.length === 0 && !quizData ? "Complete tasks to unlock mastery" : "Task & Quiz Mastery";
+                        }
+                    }
+                })
+                .catch(() => {
+                    const tasks = JSON.parse(localStorage.getItem(`studyTasks_${currentUser.id}`)) || [];
+                    const subEl = document.getElementById("statSubjects");
+                    if (subEl) subEl.innerText = tasks.length ? 1 : 0;
+                });
+        }
+
+        function logout() {
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("student");
+            localStorage.removeItem("currentUser");
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>

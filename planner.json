@@ -1,0 +1,24 @@
+[
+  {
+    "id": "1788531363706",
+    "studentId": "1788531321527",
+    "subject": "AI",
+    "topic": "Neural Networks",
+    "date": "2026-09-06",
+    "time": "14:00",
+    "duration": 60,
+    "completed": false,
+    "createdAt": "2026-09-04T14:16:03.706Z"
+  },
+  {
+    "id": "1788531363664",
+    "studentId": "1788531283940",
+    "subject": "DSA",
+    "topic": "Binary Trees",
+    "date": "2026-09-05",
+    "time": "10:00",
+    "duration": 45,
+    "completed": false,
+    "createdAt": "2026-09-04T14:16:03.664Z"
+  }
+]

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart AI Quiz Platform | Smart Education AI</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="auth-guard.js"></script>
+    <style>
+        .quiz-form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        @media (max-width: 600px) {
+            .quiz-form-grid { grid-template-columns: 1fr; }
+        }
+        .filter-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .filter-bar input, .filter-bar select {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: #fff;
+            padding: 10px 14px;
+            font-size: 13px;
+            outline: none;
+        }
+        .filter-bar input { flex: 1; min-width: 200px; }
+        .history-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 3D Ambient Background Light Orbs -->
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+
+    <!-- HEADER -->
+    <header class="dashboard-header">
+        <div class="nav-container">
+            <a href="dashboard.html" class="dashboard-logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                Smart Education AI
+            </a>
+            <ul class="nav-links">
+                <li><a href="dashboard.html">📊 Dashboard</a></li>
+                <li><a href="ai-tutor.html">🤖 AI Tutor</a></li>
+                <li><a href="leaderboard.html">🏆 Leaderboard</a></li>
+                <li><a href="pdf-assistant.html">📄 PDF Assistant</a></li>
+                <li><a href="notes.html">📝 AI Notes</a></li>
+                <li><a href="quiz.html" class="active">🎯 Quiz Engine</a></li>
+                <li><a href="profile.html">👤 Profile</a></li>
+            </ul>
+            <div class="user-area">
+                <a href="dashboard.html" class="back-dashboard">← Dashboard</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="container" style="padding-top: 36px; padding-bottom: 60px;">
+        <div style="margin-bottom: 28px; text-align: center;">
+            <h1>🎯 Smart AI Quiz Platform</h1>
+            <p>Generate dynamic MCQs powered by Gemini AI, test your knowledge in timed modes, and analyze weak topics.</p>
+        </div>
+
+        <!-- MAIN QUIZ CARD CONTAINER -->
+        <div class="quiz-card-box">
+            <!-- 1. QUIZ SETUP & AI GENERATOR FORM -->
+            <div id="quizSetupArea">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+                    <h2 style="font-size: 20px; color: var(--text-bright); margin: 0;">⚡ Configure AI Quiz Session</h2>
+                    <span style="font-size: 11px; background: rgba(139, 92, 246, 0.2); color: #c4b5fd; padding: 4px 12px; border-radius: 12px; border: 1px solid rgba(139, 92, 246, 0.4); font-weight: 700;">GEMINI 2.5 FLASH</span>
+                </div>
+
+                <form id="quizGeneratorForm" onsubmit="generateAIQuiz(event)">
+                    <div class="quiz-form-grid">
+                        <div>
+                            <label for="quizSubject">Subject Domain</label>
+                            <select id="quizSubject" required>
+                                <option value="Computer Science">Computer Science 💻</option>
+                                <option value="Mathematics">Mathematics 📐</option>
+                                <option value="Physics">Physics ⚛️</option>
+                                <option value="Chemistry">Chemistry 🧪</option>
+                                <option value="Biology">Biology 🧬</option>
+                                <option value="English">English 📖</option>
+                                <option value="General">Other / General 🌐</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="quizTopic">Study Topic *</label>
+                            <input type="text" id="quizTopic" placeholder="e.g. Data Normalization, Quantum Mechanics" required maxlength="200">
+                        </div>
+                    </div>
+
+                    <div class="quiz-form-grid">
+                        <div>
+                            <label for="quizDifficulty">Difficulty Level</label>
+                            <select id="quizDifficulty">
+                                <option value="Medium">Medium 🎯</option>
+                                <option value="Easy">Easy 🌱</option>
+                                <option value="Hard">Hard 🚀</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="quizNumQuestions">Number of Questions</label>
+                            <select id="quizNumQuestions">
+                                <option value="5">5 Questions (Quick Check)</option>
+                                <option value="10" selected>10 Questions (Standard)</option>
+                                <option value="15">15 Questions (Deep Test)</option>
+                                <option value="20">20 Questions (Exam Mode)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="quiz-form-grid">
+                        <div>
+                            <label for="quizLanguage">Language</label>
+                            <select id="quizLanguage">
+                                <option value="English">English</option>
+                                <option value="Hinglish">Hinglish (Hindi+English)</option>
+                                <option value="Hindi">Hindi (हिंदी)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="quizMode">Quiz Mode</label>
+                            <select id="quizMode">
+                                <option value="Practice">Practice Mode (Timed + Explanations)</option>
+                                <option value="Exam">Exam Mode (Strict Countdown)</option>
+                                <option value="Revision">Revision Mode (Weak Topic Focus)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 14px; margin-top: 12px; flex-wrap: wrap;">
+                        <button type="submit" id="aiGenerateBtn" class="cta-btn" style="flex: 1; justify-content: center;">
+                            ✨ Generate AI Quiz
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 2. ACTIVE QUIZ EXECUTION WORKSPACE -->
+            <div id="quizArea" style="display: none;">
+                <!-- Header Stats -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+                    <span id="questionNumber" style="color: var(--accent-blue); font-weight: 700; font-size: 15px;">Question 1 of 10</span>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <span id="quizModeBadge" class="badge-tag badge-cs">Practice Mode</span>
+                        <span id="timerDisplay" class="timer-badge">⏱️ 00:30</span>
+                        <span id="difficultyBadge" class="badge-tag badge-medium">Medium</span>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="progress-bar-bg" style="margin-bottom: 24px;">
+                    <div id="quizProgressBar" class="progress-bar-fill" style="width: 10%;"></div>
+                </div>
+
+                <!-- Question Card -->
+                <div style="margin-bottom: 28px;">
+                    <h2 id="questionText" style="color: #ffffff; font-size: 20px; font-weight: 700; margin-bottom: 24px; line-height: 1.5;">Question text loading...</h2>
+                    <div id="optionsContainer"></div>
+                </div>
+
+                <!-- Quiz Navigation Buttons -->
+                <div style="display: flex; justify-content: space-between; align-items: center; pt-3; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+                    <button type="button" id="prevQuestionBtn" onclick="navigateQuestion(-1)" class="btn-secondary" style="padding: 10px 20px; font-size: 13px;">← Previous</button>
+                    <div style="display: flex; gap: 10px;">
+                        <button type="button" id="nextQuestionBtn" onclick="navigateQuestion(1)" class="btn-secondary" style="padding: 10px 20px; font-size: 13px;">Next →</button>
+                        <button type="button" id="submitQuizBtn" onclick="confirmSubmitQuiz()" class="cta-btn" style="padding: 10px 22px; font-size: 13px;">🚀 Submit Quiz</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. RESULT & ANSWER REVIEW AREA -->
+            <div id="resultArea" style="display: none; text-align: center;">
+                <div style="font-size: 56px; margin-bottom: 12px;" id="resultEmoji">🏆</div>
+                <h2 style="color: #fff; margin-bottom: 6px; font-size: 26px;">Quiz Completed!</h2>
+                <p id="feedbackMessage" style="color: var(--text-muted); font-size: 15px; margin-bottom: 28px;"></p>
+
+                <!-- Metric Cards Grid -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 16px; margin-bottom: 28px;">
+                    <div style="background: rgba(15, 23, 42, 0.7); padding: 16px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
+                        <span style="color: var(--text-sub); font-size: 12px; display: block; margin-bottom: 4px;">Your Score</span>
+                        <strong id="scoreDisplay" style="color: var(--accent-blue); font-size: 24px;">0 / 10</strong>
+                    </div>
+                    <div style="background: rgba(15, 23, 42, 0.7); padding: 16px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
+                        <span style="color: var(--text-sub); font-size: 12px; display: block; margin-bottom: 4px;">Accuracy</span>
+                        <strong id="percentageDisplay" style="color: var(--accent-emerald); font-size: 24px;">0%</strong>
+                    </div>
+                    <div style="background: rgba(15, 23, 42, 0.7); padding: 16px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
+                        <span style="color: var(--text-sub); font-size: 12px; display: block; margin-bottom: 4px;">Correct / Wrong</span>
+                        <strong id="breakdownDisplay" style="color: var(--text-bright); font-size: 18px;">0 / 0</strong>
+                    </div>
+                    <div style="background: rgba(15, 23, 42, 0.7); padding: 16px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
+                        <span style="color: var(--text-sub); font-size: 12px; display: block; margin-bottom: 4px;">Time Taken</span>
+                        <strong id="timeTakenDisplay" style="color: var(--accent-amber); font-size: 18px;">00:00</strong>
+                    </div>
+                    <div style="background: rgba(15, 23, 42, 0.7); padding: 16px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
+                        <span style="color: var(--text-sub); font-size: 12px; display: block; margin-bottom: 4px;">XP Awarded</span>
+                        <strong id="xpAwardedDisplay" style="color: var(--accent-indigo); font-size: 24px;">+0 XP</strong>
+                    </div>
+                </div>
+
+                <!-- Smart Recommendation & Action Box -->
+                <div id="smartRecommendationBox" style="background: rgba(99, 102, 241, 0.12); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 16px; padding: 20px; text-align: left; margin-bottom: 28px;">
+                    <h4 style="color: var(--accent-blue); margin-bottom: 6px; font-size: 15px; display: flex; align-items: center; gap: 8px;">🤖 Smart Recommendation</h4>
+                    <p id="recommendationText" style="color: var(--text-muted); font-size: 14px; margin: 0; line-height: 1.5;"></p>
+                </div>
+
+                <!-- Action Buttons -->
+                <div style="display: flex; gap: 14px; justify-content: center; margin-bottom: 36px; flex-wrap: wrap;">
+                    <button onclick="retryCurrentQuiz()" class="btn-secondary" style="padding: 12px 24px;">🔄 Retry Quiz</button>
+                    <button onclick="resetQuizSetup()" class="cta-btn" style="padding: 12px 24px;">✨ Create New Quiz</button>
+                </div>
+
+                <!-- Answer Review Section -->
+                <div style="text-align: left;">
+                    <h3 style="color: #ffffff; font-size: 20px; margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">🔍 Detailed Answer Review & AI Explanations</h3>
+                    <div id="answerReviewContainer"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- WEAK TOPICS & ANALYTICS SECTION -->
+        <section id="weakTopicsSection" style="margin-top: 40px; display: none;">
+            <div class="weak-topic-banner">
+                <div style="font-size: 36px;">⚠️</div>
+                <div>
+                    <h3 style="color: #fca5a5; margin-bottom: 4px; font-size: 18px;">Weak Topic Detection</h3>
+                    <p id="weakTopicsText" style="color: var(--text-muted); font-size: 14px; margin: 0;"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- QUIZ HISTORY SECTION -->
+        <section style="margin-top: 50px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+                <h2 style="font-size: 22px; color: var(--text-bright); margin: 0;">📚 Quiz History & Performance Log</h2>
+                <span id="quizHistoryCount" style="color: var(--text-sub); font-size: 14px; font-weight: 600;">0 Past Quizzes</span>
+            </div>
+
+            <!-- Filter & Search Controls -->
+            <div class="filter-bar">
+                <input type="text" id="historySearchInput" placeholder="🔍 Search history by topic or subject..." oninput="filterHistory()">
+                <select id="historySubjectFilter" onchange="filterHistory()">
+                    <option value="ALL">All Subjects</option>
+                    <option value="Computer Science">Computer Science</option>
+                    <option value="Mathematics">Mathematics</option>
+                    <option value="Physics">Physics</option>
+                    <option value="Chemistry">Chemistry</option>
+                    <option value="Biology">Biology</option>
+                    <option value="English">English</option>
+                    <option value="General">General</option>
+                </select>
+                <select id="historyDifficultyFilter" onchange="filterHistory()">
+                    <option value="ALL">All Difficulties</option>
+                    <option value="Easy">Easy</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Hard">Hard</option>
+                </select>
+                <select id="historySortSelect" onchange="filterHistory()">
+                    <option value="NEWEST">Sort: Newest First</option>
+                    <option value="HIGHEST">Sort: Highest Score</option>
+                    <option value="LOWEST">Sort: Lowest Score</option>
+                </select>
+            </div>
+
+            <!-- History Cards Grid -->
+            <div id="historyContainer" class="history-grid"></div>
+        </section>
+    </main>
+
+    <!-- SAAS FOOTER -->
+    <footer class="saas-footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <span>© 2026 Smart Education AI. All rights reserved.</span>
+                <span>AI Quizzes • Learn • Practice • Excel</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script src="quiz.js"></script>
+</body>
+</html>

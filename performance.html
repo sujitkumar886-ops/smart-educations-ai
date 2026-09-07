@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Analytics | Smart Education AI</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="auth-guard.js"></script>
+</head>
+<body>
+    <!-- 3D Ambient Background Light Orbs -->
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+
+    <header class="dashboard-header">
+        <div class="nav-container">
+            <a href="dashboard.html" class="dashboard-logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                Smart Education AI <span class="badge-tag badge-cs" style="margin-left: 8px;">Analytics</span>
+            </a>
+            <div class="user-area">
+                <a href="dashboard.html" class="back-dashboard">← Dashboard</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 40px; padding-bottom: 60px;">
+        <div style="text-align: center; max-width: 650px; margin: 0 auto 35px;">
+            <h1>📈 Performance Analytics</h1>
+            <p>Track your academic mastery, quiz scores, and scheduled task completion trends.</p>
+        </div>
+
+        <div style="max-width: 950px; margin: auto; display: flex; flex-direction: column; gap: 24px;">
+            <div class="glass-card" style="padding: 28px; display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                    <h3 style="color: #cbd5e1; font-size: 15px; margin-bottom: 6px;">Current Mastery Classification</h3>
+                    <strong id="performanceLevel" style="font-size: 26px; color: #60a5fa;">Getting Started</strong>
+                </div>
+                <div style="width: 48px; height: 48px; border-radius: 14px; background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3); display: flex; align-items: center; justify-content: center; color: #818cf8;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg>
+                </div>
+            </div>
+
+            <div class="stats" style="margin-bottom: 0;">
+                <div class="stat-card">
+                    <h3>Quiz Score</h3>
+                    <strong id="quizScore">0/0</strong>
+                    <p>Last Session Result</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Quiz Accuracy</h3>
+                    <strong id="quizPercentage">0%</strong>
+                    <p>Accuracy Percentage</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Tasks</h3>
+                    <strong id="totalTasks">0</strong>
+                    <p>Scheduled Study Tasks</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Completed Tasks</h3>
+                    <strong id="completedTasks">0</strong>
+                    <p>Tasks Finished</p>
+                </div>
+            </div>
+
+            <div class="glass-card" style="padding: 28px;">
+                <h3 style="color: #fff; margin-bottom: 15px; font-size: 18px;">Task Mastery Breakdown</h3>
+                <div style="display: flex; justify-content: space-between; color: #cbd5e1; margin-bottom: 10px;">
+                    <span>Completed: <strong id="summaryCompleted" style="color: #34d399;">0</strong></span>
+                    <span>Pending: <strong id="summaryPending" style="color: #fbbf24;">0</strong></span>
+                </div>
+                <div style="width: 100%; height: 10px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden;">
+                    <div id="perfTaskProgressBar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #10b981, #34d399); transition: width 0.3s;"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="saas-footer">
+        <div class="container">
+            <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+                <span>© 2026 Smart Education AI. All rights reserved.</span>
+                <span>Learn • Practice • Improve • Succeed</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="performance.js"></script>
+</body>
+</html>

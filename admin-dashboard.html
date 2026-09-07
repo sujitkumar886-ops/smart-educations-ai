@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Control Center & Platform Metrics | Smart Education AI</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="auth-guard.js"></script>
+    <style>
+        .admin-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .stat-card-admin {
+            background: rgba(15, 23, 42, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg, 16px);
+            padding: 20px;
+            backdrop-filter: blur(16px);
+            text-align: center;
+        }
+        .stat-card-admin h4 {
+            margin: 0 0 8px 0;
+            color: #94a3b8;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .stat-card-admin .stat-value {
+            font-size: 30px;
+            font-weight: 800;
+            color: #60a5fa;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        .data-table th, .data-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .data-table th {
+            color: #60a5fa;
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+        .data-table td {
+            color: #f1f5f9;
+            font-size: 14px;
+        }
+        .filter-bar {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+        .modal-card {
+            background: #0f172a;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            max-width: 600px;
+            width: 100%;
+            padding: 30px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        .activity-item {
+            padding: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .activity-item:last-child { border-bottom: none; }
+    </style>
+</head>
+<body>
+    <!-- 3D Ambient Background Light Orbs -->
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+
+    <header class="dashboard-header">
+        <div class="nav-container">
+            <a href="dashboard.html" class="dashboard-logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Smart Education AI <span class="badge-tag badge-cs" style="margin-left: 8px; background: rgba(239, 68, 68, 0.2); color: #f87171;">Admin Portal</span>
+            </a>
+            <div class="user-area">
+                <a href="dashboard.html" class="back-dashboard">← Back to Dashboard</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 40px; padding-bottom: 60px;">
+        <!-- ACCESS DENIED VIEW (Rendered for non-admin users) -->
+        <div id="accessDeniedContainer" style="display: none; max-width: 550px; margin: 60px auto; text-align: center;">
+            <div class="glass-card" style="padding: 40px 30px; border: 1px solid rgba(239, 68, 68, 0.3); background: rgba(239, 68, 68, 0.05);">
+                <div style="font-size: 54px; margin-bottom: 15px;">🚫</div>
+                <h1 style="color: #f87171; font-size: 26px; margin-bottom: 12px;">Access Denied — Admin Only</h1>
+                <p style="color: #94a3b8; font-size: 15px; line-height: 1.6; margin-bottom: 25px;">
+                    You do not have administrative permission to view or manage the Admin Control Center. This interface is restricted strictly to platform administrators.
+                </p>
+                <a href="dashboard.html" class="cta-btn" style="display: inline-block; padding: 12px 24px; text-decoration: none;">← Return to Student Dashboard</a>
+            </div>
+        </div>
+
+        <!-- AUTHORIZED ADMIN CONTENT CONTAINER -->
+        <div id="adminContentContainer" style="display: none;">
+            <div style="text-align: center; max-width: 700px; margin: 0 auto 35px;">
+                <h1>🛡️ Admin Control Center & Platform Metrics</h1>
+                <p style="color: #94a3b8; font-size: 15px;">Server metrics overview, database audit, system-wide activity, and role-based user management.</p>
+            </div>
+
+            <!-- Platform System Metrics -->
+            <div class="admin-stats-grid">
+                <div class="stat-card-admin">
+                    <h4>Total Users</h4>
+                    <div class="stat-value" id="statUsers">0</div>
+                </div>
+                <div class="stat-card-admin">
+                    <h4>Students</h4>
+                    <div class="stat-value" id="statStudents" style="color: #34d399;">0</div>
+                </div>
+                <div class="stat-card-admin">
+                    <h4>Teachers</h4>
+                    <div class="stat-value" id="statTeachers" style="color: #fbbf24;">0</div>
+                </div>
+                <div class="stat-card-admin">
+                    <h4>Admins</h4>
+                    <div class="stat-value" id="statAdmins" style="color: #f87171;">0</div>
+                </div>
+                <div class="stat-card-admin">
+                    <h4>Total Notes</h4>
+                    <div class="stat-value" id="statNotes" style="color: #a78bfa;">0</div>
+                </div>
+                <div class="stat-card-admin">
+                    <h4>PDF Study Files</h4>
+                    <div class="stat-value" id="statPDFs" style="color: #818cf8;">0</div>
+                </div>
+                <div class="stat-card-admin">
+                    <h4>Solved Images</h4>
+                    <div class="stat-value" id="statImages" style="color: #38bdf8;">0</div>
+                </div>
+                <div class="stat-card-admin">
+                    <h4>Server Uptime</h4>
+                    <div class="stat-value" id="statUptime" style="color: #64748b; font-size: 22px;">0s</div>
+                </div>
+            </div>
+
+            <!-- User Accounts Management Table -->
+            <div class="glass-card" style="margin-top: 35px; padding: 28px;">
+                <div class="filter-bar">
+                    <div>
+                        <h2 style="color: #fff; margin: 0; font-size: 20px;">User Accounts & Role Permissions</h2>
+                        <p style="color: #94a3b8; font-size: 13px; margin: 4px 0 0;">Manage student access roles, inspect activity metrics, or suspend accounts.</p>
+                    </div>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <input type="text" id="adminSearchInput" class="auth-input" placeholder="Search by name or email..." style="width: 220px; padding: 8px 12px; font-size: 13px;">
+                        <select id="roleFilterSelect" class="auth-input" style="width: auto; padding: 8px 12px; font-size: 13px;">
+                            <option value="all">All Roles</option>
+                            <option value="student">Students Only</option>
+                            <option value="teacher">Teachers Only</option>
+                            <option value="admin">Admins Only</option>
+                        </select>
+                        <select id="sortUsersSelect" class="auth-input" style="width: auto; padding: 8px 12px; font-size: 13px;">
+                            <option value="newest">Newest Registered</option>
+                            <option value="oldest">Oldest Registered</option>
+                            <option value="name">Name A-Z</option>
+                            <option value="xp">Highest XP</option>
+                        </select>
+                        <button id="refreshUsersBtn" class="ask-btn" style="padding: 8px 16px; font-size: 13px;">🔄 Refresh</button>
+                    </div>
+                </div>
+
+                <div style="overflow-x: auto;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>User Account</th>
+                                <th>Access Role</th>
+                                <th>Account Status</th>
+                                <th>Study Activity Metrics</th>
+                                <th>Registered Date</th>
+                                <th>Administrative Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="userAccountsBody">
+                            <tr><td colspan="6" style="text-align: center; padding: 25px; color: #94a3b8;">Loading authorized user data from server...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Platform System Activity Audit Timeline -->
+            <div class="glass-card" style="margin-top: 35px; padding: 28px;">
+                <h2 style="color: #fff; margin: 0 0 15px; font-size: 20px;">📜 Recent Platform Activity Timeline</h2>
+                <div id="activityTimeline" style="max-height: 350px; overflow-y: auto;">
+                    <p style="color: #94a3b8; font-size: 14px;">Loading system activity...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- USER DETAIL INSPECTION MODAL -->
+    <div id="userDetailModal" class="modal-overlay">
+        <div class="modal-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;">
+                <h3 style="color: #fff; margin: 0; font-size: 20px;" id="modalUserName">User Profile Overview</h3>
+                <button onclick="closeUserModal()" style="background: none; border: none; color: #94a3b8; font-size: 24px; cursor: pointer;">&times;</button>
+            </div>
+            <div id="modalContent">
+                <p style="color: #94a3b8;">Loading user metrics...</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="saas-footer">
+        <div class="container">
+            <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+                <span>© 2026 Smart Education AI. All rights reserved.</span>
+                <span>Learn • Practice • Improve • Succeed</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>

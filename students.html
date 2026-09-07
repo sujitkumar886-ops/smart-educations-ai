@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registered Students | Smart Education AI</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="auth-guard.js"></script>
+</head>
+<body>
+    <!-- 3D Ambient Background Light Orbs -->
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+
+    <header class="dashboard-header">
+        <div class="nav-container">
+            <a href="dashboard.html" class="dashboard-logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                Smart Education AI <span class="badge-tag badge-cs" style="margin-left: 8px;">Students Roster</span>
+            </a>
+            <div class="user-area">
+                <a href="dashboard.html" class="back-dashboard">← Dashboard</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 40px; padding-bottom: 60px;">
+        <div style="text-align: center; max-width: 650px; margin: 0 auto 35px;">
+            <h1>🎓 Registered Student Directory</h1>
+            <p>View registered student accounts, course details, and gamification metrics.</p>
+        </div>
+
+        <div style="max-width: 950px; margin: auto;">
+            <div id="studentsContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;"></div>
+        </div>
+    </main>
+
+    <footer class="saas-footer">
+        <div class="container">
+            <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+                <span>© 2026 Smart Education AI. All rights reserved.</span>
+                <span>Learn • Practice • Improve • Succeed</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="students.js"></script>
+</body>
+</html>

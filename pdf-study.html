@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Study AI | Smart Education AI</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="auth-guard.js"></script>
+    <script src="theme.js"></script>
+    <script src="auth.js"></script>
+    <style>
+        /* PDF Study Page Specific Glassmorphism & Layout */
+        .pdf-dropzone {
+            border: 2px dashed rgba(99, 102, 241, 0.4);
+            border-radius: 20px;
+            padding: 45px 30px;
+            text-align: center;
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(12px);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .pdf-dropzone:hover, .pdf-dropzone.dragover {
+            border-color: #818cf8;
+            background: rgba(99, 102, 241, 0.12);
+            box-shadow: 0 0 25px rgba(99, 102, 241, 0.25);
+        }
+        .pdf-tab-bar {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            margin-bottom: 25px;
+            scrollbar-width: thin;
+        }
+        .pdf-tab-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #94a3b8;
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .pdf-tab-btn:hover {
+            color: #f8fafc;
+            background: rgba(255, 255, 255, 0.08);
+        }
+        .pdf-tab-btn.active {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            color: #ffffff;
+            border-color: #818cf8;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.35);
+        }
+        .pdf-tab-panel {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .pdf-tab-panel.active {
+            display: block;
+        }
+
+        /* 3D Flashcard Widget */
+        .flashcard-wrapper {
+            perspective: 1000px;
+            max-width: 550px;
+            margin: 0 auto;
+        }
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            min-height: 280px;
+            text-align: center;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flashcard-wrapper.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+        .flashcard-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            padding: 35px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        .flashcard-back {
+            transform: rotateY(180deg);
+            background: rgba(30, 27, 75, 0.85);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+        .imp-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .imp-high { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
+        .imp-medium { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+        .imp-low { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+    </style>
+</head>
+<body>
+    <!-- 3D Ambient Background Light Orbs -->
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+
+    <!-- Header Navigation -->
+    <header class="dashboard-header">
+        <div class="nav-container">
+            <a href="dashboard.html" class="dashboard-logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                Smart Education AI <span class="badge-tag badge-cs" style="margin-left: 8px;">PDF AI</span>
+            </a>
+            <div class="nav-links">
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="ai-tutor.html" class="nav-link">AI Tutor</a>
+                <a href="pdf-study.html" class="nav-link active">PDF Study AI</a>
+                <a href="image-solver.html" class="nav-link">Image Solver</a>
+                <a href="notes.html" class="nav-link">Notes</a>
+                <a href="quiz.html" class="nav-link">Quiz</a>
+                <a href="study-planner.html" class="nav-link">Planner</a>
+                <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+            </div>
+            <div class="user-area">
+                <span class="user-greeting" style="color: #94a3b8; font-size: 14px; margin-right: 12px;">Welcome, <strong id="navUserName" style="color: #f8fafc;">Student</strong></span>
+                <button id="themeToggleBtn" class="theme-toggle-btn" title="Toggle Light/Dark Theme">🌙</button>
+                <button id="logoutBtn" class="btn btn-secondary" style="padding: 6px 14px; font-size: 13px;">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 35px; padding-bottom: 60px;">
+        <!-- Page Title Banner -->
+        <div style="text-align: center; max-width: 700px; margin: 0 auto 30px;">
+            <h1 style="font-size: 32px; font-weight: 800; color: #ffffff; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                <span>📄 PDF → AI Study Assistant</span>
+            </h1>
+            <p style="color: #94a3b8; font-size: 15px; line-height: 1.6;">
+                Upload your textbook chapters, lecture notes, or research papers and instantly convert them into interactive summaries, notes, quizzes, flashcards, and grounded Q&A.
+            </p>
+        </div>
+
+        <!-- PDF Upload Dropzone Container -->
+        <div style="max-width: 850px; margin: 0 auto 40px;">
+            <div id="pdfDropzone" class="pdf-dropzone" onclick="document.getElementById('pdfFileInput').click()">
+                <div style="width: 60px; height: 60px; margin: 0 auto 16px; background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3); border-radius: 18px; display: flex; align-items: center; justify-content: center; color: #818cf8;">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 12 15 15"/></svg>
+                </div>
+                <h3 style="color: #ffffff; margin-bottom: 8px; font-size: 20px;">Upload your PDF Study Material</h3>
+                <p style="color: #94a3b8; font-size: 14px; margin-bottom: 15px;">Drag & drop your file here or click to browse (.pdf files up to 15MB)</p>
+                <input type="file" id="pdfFileInput" accept=".pdf" style="display: none;" onchange="handleFileSelect(event)">
+                <div style="display: inline-block; padding: 10px 22px; background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); color: #fff; border-radius: 12px; font-size: 14px; font-weight: 600;">
+                    Select PDF Document
+                </div>
+            </div>
+
+            <!-- Upload & Parsing Progress Status Indicator -->
+            <div id="uploadStatusCard" class="glass-card" style="display: none; padding: 25px; margin-top: 20px; text-align: center;">
+                <div style="font-size: 28px; margin-bottom: 10px;" id="statusIcon">⏳</div>
+                <h4 id="statusTitle" style="color: #f8fafc; margin-bottom: 6px; font-size: 17px;">Processing PDF...</h4>
+                <p id="statusMessage" style="color: #94a3b8; font-size: 14px; margin-bottom: 15px;">Validating file structure and extracting text...</p>
+                <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden;">
+                    <div id="statusProgressBar" style="width: 25%; height: 100%; background: linear-gradient(90deg, #6366f1, #a855f7); transition: width 0.4s ease;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interactive AI Study Workspace (Rendered after upload or opening saved PDF) -->
+        <div id="studyWorkspace" class="glass-card" style="display: none; padding: 30px; margin-bottom: 40px;">
+            <!-- Document Meta Header -->
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 15px; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                <div>
+                    <span id="docSubjectBadge" class="badge-tag badge-cs" style="margin-bottom: 8px; display: inline-block;">General Study</span>
+                    <h2 id="docTitle" style="color: #60a5fa; margin: 0 0 6px 0; font-size: 24px;">Document Title</h2>
+                    <p style="color: #94a3b8; font-size: 13px; margin: 0; display: flex; gap: 15px; flex-wrap: wrap;">
+                        <span>📄 <strong id="docPages">0</strong> Pages</span>
+                        <span>⏱️ Approx <strong id="docReadingTime">0</strong> min read</span>
+                        <span>📅 Studied: <strong id="docLastStudied">Today</strong></span>
+                    </p>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn btn-secondary" onclick="closeWorkspace()" style="padding: 8px 16px; font-size: 13px;">← Close Workspace</button>
+                    <button class="btn btn-secondary" onclick="deleteCurrentPDF()" style="padding: 8px 16px; font-size: 13px; border-color: rgba(239,68,68,0.4); color: #f87171;">🗑️ Delete</button>
+                </div>
+            </div>
+
+            <!-- 9 Workspace Tab Navigation Bar -->
+            <div class="pdf-tab-bar">
+                <button class="pdf-tab-btn active" onclick="switchTab('summaryTab')">📌 Summary</button>
+                <button class="pdf-tab-btn" onclick="switchTab('topicsTab')">💡 Topics</button>
+                <button class="pdf-tab-btn" onclick="switchTab('notesTab')">📝 AI Notes</button>
+                <button class="pdf-tab-btn" onclick="switchTab('examTab')">🎯 Exam Focus</button>
+                <button class="pdf-tab-btn" onclick="switchTab('quizTab')">🧪 MCQ Quiz</button>
+                <button class="pdf-tab-btn" onclick="switchTab('flashcardsTab')">🎴 Flashcards</button>
+                <button class="pdf-tab-btn" onclick="switchTab('askTab')">💬 Ask PDF</button>
+                <button class="pdf-tab-btn" onclick="switchTab('explainTab')">🧠 Explain Simply</button>
+                <button class="pdf-tab-btn" onclick="switchTab('searchTab')">🔍 Search PDF</button>
+            </div>
+
+            <!-- Panel 1: AI Summary -->
+            <div id="summaryTab" class="pdf-tab-panel active">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn btn-secondary summary-len-btn active" onclick="updateSummaryLength('Short')">Short</button>
+                        <button class="btn btn-secondary summary-len-btn" onclick="updateSummaryLength('Medium')">Medium</button>
+                        <button class="btn btn-secondary summary-len-btn" onclick="updateSummaryLength('Detailed')">Detailed</button>
+                    </div>
+                    <select id="summaryLangSelect" class="auth-input" onchange="updateSummaryLanguage(this.value)" style="width: auto; padding: 6px 12px; font-size: 13px;">
+                        <option value="English">English</option>
+                        <option value="Hindi">Hindi (हिंदी)</option>
+                        <option value="Hinglish">Hinglish</option>
+                    </select>
+                </div>
+                <div id="summaryContent" style="color: #e2e8f0; line-height: 1.7; font-size: 15px; white-space: pre-wrap;" class="glass-card" style="padding: 20px;">
+                    Loading AI summary...
+                </div>
+            </div>
+
+            <!-- Panel 2: Important Topics -->
+            <div id="topicsTab" class="pdf-tab-panel">
+                <h3 style="color: #f8fafc; margin-bottom: 15px; font-size: 18px;">Document Key Topics</h3>
+                <div id="topicsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px;">
+                    <!-- Topic Cards Rendered Dynamically -->
+                </div>
+            </div>
+
+            <!-- Panel 3: AI Notes -->
+            <div id="notesTab" class="pdf-tab-panel">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+                    <h3 style="color: #f8fafc; margin: 0; font-size: 18px;">Structured Study Notes</h3>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="btn btn-primary" onclick="saveNotesToLibrary()" style="padding: 7px 15px; font-size: 13px;">💾 Save to My Notes</button>
+                        <button class="btn btn-secondary" onclick="toggleEditNotes()" style="padding: 7px 15px; font-size: 13px;">✏️ Edit</button>
+                        <button class="btn btn-secondary" onclick="regenerateNotes()" style="padding: 7px 15px; font-size: 13px;">🔄 Regenerate</button>
+                        <button class="btn btn-secondary" onclick="copyNotesContent()" style="padding: 7px 15px; font-size: 13px;">📋 Copy</button>
+                        <button class="btn btn-secondary" onclick="printNotesContent()" style="padding: 7px 15px; font-size: 13px;">🖨️ Print</button>
+                    </div>
+                </div>
+                <div id="notesEditContainer" style="display: none; margin-bottom: 15px;">
+                    <textarea id="notesEditTextarea" class="auth-input" style="width: 100%; min-height: 300px; font-family: monospace; font-size: 14px; line-height: 1.6; padding: 15px; border-radius: 12px; margin-bottom: 10px;"></textarea>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-primary" onclick="saveNotesEdit()" style="padding: 6px 16px; font-size: 13px;">Save Edit</button>
+                        <button class="btn btn-secondary" onclick="toggleEditNotes()" style="padding: 6px 16px; font-size: 13px;">Cancel</button>
+                    </div>
+                </div>
+                <div id="notesMarkdownContainer" style="color: #e2e8f0; line-height: 1.7; font-size: 15px; white-space: pre-wrap; background: rgba(15,23,42,0.6); padding: 25px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08);">
+                    Loading AI study notes...
+                </div>
+            </div>
+
+            <!-- Panel 4: Exam Focus Points -->
+            <div id="examTab" class="pdf-tab-panel">
+                <div style="margin-bottom: 20px; padding: 12px 18px; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); border-radius: 12px; color: #fbbf24; font-size: 13px;">
+                    💡 <strong>AI Guidance Notice:</strong> These points represent high-yield concepts identified from the document structure for strategic revision.
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                    <div class="glass-card" style="padding: 20px;">
+                        <h4 style="color: #60a5fa; margin-top: 0; margin-bottom: 12px;">📌 Most Important Concepts</h4>
+                        <ul id="examKeyConceptsList" style="color: #cbd5e1; padding-left: 20px; margin: 0; line-height: 1.7;"></ul>
+                    </div>
+                    <div class="glass-card" style="padding: 20px;">
+                        <h4 style="color: #a855f7; margin-top: 0; margin-bottom: 12px;">📖 Core Definitions</h4>
+                        <ul id="examDefinitionsList" style="color: #cbd5e1; padding-left: 20px; margin: 0; line-height: 1.7;"></ul>
+                    </div>
+                    <div class="glass-card" style="padding: 20px; grid-column: 1 / -1;">
+                        <h4 style="color: #34d399; margin-top: 0; margin-bottom: 12px;">❓ Predicted Exam Questions</h4>
+                        <div id="examQuestionsList" style="color: #cbd5e1; line-height: 1.7;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel 5: MCQ Quiz -->
+            <div id="quizTab" class="pdf-tab-panel">
+                <!-- Quiz Generator Controls -->
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 25px; background: rgba(15,23,42,0.4); padding: 15px; border-radius: 14px;">
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap; align-items: center;">
+                        <label style="color: #94a3b8; font-size: 13px;">Questions:
+                            <select id="pdfQuizCount" class="auth-input" style="width: auto; padding: 4px 10px; font-size: 13px;">
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                            </select>
+                        </label>
+                        <label style="color: #94a3b8; font-size: 13px;">Difficulty:
+                            <select id="pdfQuizDiff" class="auth-input" style="width: auto; padding: 4px 10px; font-size: 13px;">
+                                <option value="Medium">Medium</option>
+                                <option value="Easy">Easy</option>
+                                <option value="Hard">Hard</option>
+                            </select>
+                        </label>
+                        <label style="color: #94a3b8; font-size: 13px;">Language:
+                            <select id="pdfQuizLang" class="auth-input" style="width: auto; padding: 4px 10px; font-size: 13px;">
+                                <option value="English">English</option>
+                                <option value="Hindi">Hindi</option>
+                                <option value="Hinglish">Hinglish</option>
+                            </select>
+                        </label>
+                    </div>
+                    <button class="btn btn-primary" onclick="generatePDFQuiz()" style="padding: 8px 18px; font-size: 13px;">✨ Generate New Quiz</button>
+                </div>
+
+                <!-- Active Quiz Container -->
+                <div id="pdfQuizContainer">
+                    <div id="pdfQuizQuestionsArea"></div>
+                    <div style="text-align: center; margin-top: 25px;">
+                        <button id="submitPdfQuizBtn" class="btn btn-primary" onclick="submitPDFQuiz()" style="padding: 12px 30px; font-size: 15px; display: none;">Submit Quiz & Reveal Explanations</button>
+                    </div>
+                </div>
+
+                <!-- Quiz Results Breakdown -->
+                <div id="pdfQuizResultsCard" class="glass-card" style="display: none; padding: 30px; text-align: center; margin-top: 25px;">
+                    <div style="font-size: 40px; margin-bottom: 10px;">🏆</div>
+                    <h3 style="color: #f8fafc; margin-bottom: 6px;">Quiz Results Summary</h3>
+                    <p id="pdfQuizScoreText" style="font-size: 22px; font-weight: 800; color: #818cf8; margin-bottom: 15px;">Score: 0 / 0 (0%)</p>
+                    <div id="pdfQuizAnswersReview" style="text-align: left; margin-top: 25px;"></div>
+                </div>
+            </div>
+
+            <!-- Panel 6: Flashcards -->
+            <div id="flashcardsTab" class="pdf-tab-panel">
+                <div style="text-align: center; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; gap: 15px;">
+                    <span id="flashcardCounter" style="color: #818cf8; font-weight: 700; font-size: 14px;">Card 1 of 5</span>
+                    <span id="flashcardStatusBadge" style="display: none; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 700;"></span>
+                </div>
+
+                <!-- 3D Interactive Flip Flashcard -->
+                <div id="flashcardWidget" class="flashcard-wrapper" onclick="flipFlashcard()">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-face flashcard-front">
+                            <span style="font-size: 12px; color: #818cf8; font-weight: 700; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 1px;">QUESTION / CONCEPT</span>
+                            <h3 id="flashcardFrontText" style="color: #ffffff; font-size: 18px; margin: 0; line-height: 1.6;">Click to view question</h3>
+                            <span style="font-size: 12px; color: #64748b; margin-top: 20px;">(Click card to flip 🔄)</span>
+                        </div>
+                        <div class="flashcard-face flashcard-back">
+                            <span style="font-size: 12px; color: #34d399; font-weight: 700; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 1px;">ANSWER / EXPLANATION</span>
+                            <p id="flashcardBackText" style="color: #f1f5f9; font-size: 15px; margin: 0; line-height: 1.7; white-space: pre-wrap;">Explanation</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Flashcard Controls -->
+                <div style="display: flex; justify-content: center; align-items: center; gap: 12px; margin-top: 25px; flex-wrap: wrap;">
+                    <button class="btn btn-secondary" onclick="prevFlashcard()">← Previous</button>
+                    <button class="btn btn-secondary" onclick="markFlashcardKnown()" style="border-color: rgba(16,185,129,0.4); color: #34d399;">✅ Mark Known</button>
+                    <button class="btn btn-secondary" onclick="markFlashcardReview()" style="border-color: rgba(245,158,11,0.4); color: #fbbf24;">⭐ Needs Review</button>
+                    <button class="btn btn-secondary" onclick="shuffleFlashcards()">🔀 Shuffle</button>
+                    <button class="btn btn-primary" onclick="nextFlashcard()">Next →</button>
+                </div>
+            </div>
+
+            <!-- Panel 7: Grounded Ask PDF AI Chat -->
+            <div id="askTab" class="pdf-tab-panel">
+                <div style="max-width: 750px; margin: 0 auto;">
+                    <div id="askChatMessages" style="min-height: 250px; max-height: 400px; overflow-y: auto; padding: 20px; background: rgba(15,23,42,0.6); border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); margin-bottom: 15px; display: flex; flex-direction: column; gap: 15px;">
+                        <div style="background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3); color: #cbd5e1; padding: 14px 18px; border-radius: 14px; font-size: 14px; line-height: 1.6;">
+                            🤖 <strong>Grounded PDF Assistant:</strong> Ask me any question specifically about this document. I will cite the reference details and strictly refrain from off-topic hallucinations.
+                        </div>
+                    </div>
+
+                    <!-- Quick Prompt Chips -->
+                    <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 12px;">
+                        <button class="btn btn-secondary" onclick="askQuickPrompt('Summarize the key findings of this document')" style="font-size: 12px; padding: 5px 12px; white-space: nowrap;">📌 Key Findings</button>
+                        <button class="btn btn-secondary" onclick="askQuickPrompt('What are the main definitions stated here?')" style="font-size: 12px; padding: 5px 12px; white-space: nowrap;">📖 Core Definitions</button>
+                        <button class="btn btn-secondary" onclick="askQuickPrompt('Explain the primary formulas or mechanisms')" style="font-size: 12px; padding: 5px 12px; white-space: nowrap;">⚡ Formulas & Rules</button>
+                    </div>
+
+                    <!-- Chat Input Controls -->
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="askPdfInput" class="auth-input" placeholder="Ask a question grounded in this PDF..." onkeypress="if(event.key==='Enter') sendAskPDFQuestion()">
+                        <button class="btn btn-primary" onclick="sendAskPDFQuestion()" style="padding: 10px 22px; font-size: 14px; white-space: nowrap;">Send</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel 8: Explain Simply -->
+            <div id="explainTab" class="pdf-tab-panel">
+                <div style="max-width: 750px; margin: 0 auto;">
+                    <div style="display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;">
+                        <input type="text" id="explainTopicInput" class="auth-input" placeholder="Enter topic from PDF to simplify..." style="flex: 1; min-width: 240px;">
+                        <select id="explainLangSelect" class="auth-input" style="width: auto; padding: 8px 14px; font-size: 13px;">
+                            <option value="English">Simple English</option>
+                            <option value="Hindi">Hindi (हिंदी)</option>
+                            <option value="Hinglish">Hinglish</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="requestExplainSimply()" style="padding: 8px 20px; font-size: 13px;">🧠 Simplify Topic</button>
+                    </div>
+
+                    <div id="explainOutputCard" class="glass-card" style="padding: 25px; color: #cbd5e1; line-height: 1.7; white-space: pre-wrap;">
+                        Enter a topic above or select one from the Topics tab to view a beginner-friendly explanation with real-world analogies.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel 9: Search PDF Text -->
+            <div id="searchTab" class="pdf-tab-panel">
+                <div style="max-width: 750px; margin: 0 auto;">
+                    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                        <input type="text" id="pdfSearchInput" class="auth-input" placeholder="Search keywords or topics inside this PDF..." onkeypress="if(event.key==='Enter') executePDFSearch()" style="flex: 1;">
+                        <button class="btn btn-primary" onclick="executePDFSearch()" style="padding: 10px 22px; font-size: 14px; white-space: nowrap;">🔍 Search PDF</button>
+                    </div>
+                    <div id="pdfSearchResultsSummary" style="margin-bottom: 15px; color: #818cf8; font-size: 14px; font-weight: 600;"></div>
+                    <div id="pdfSearchResultsList" style="display: flex; flex-direction: column; gap: 14px;">
+                        <p style="color: #94a3b8; text-align: center;">Enter a search term above to locate matching text snippets across the PDF document.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Saved Study PDFs Library ("My Study PDFs") -->
+        <div style="max-width: 1100px; margin: 0 auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+                <h2 style="color: #ffffff; margin: 0; font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 10px;">
+                    <span>📚 My Study PDFs Library</span>
+                </h2>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                    <input type="text" id="searchPdfInput" class="auth-input" placeholder="Search saved PDFs..." onkeyup="filterSavedPDFs()" style="width: 220px; padding: 6px 12px; font-size: 13px;">
+                    <select id="sortPdfSelect" class="auth-input" onchange="filterSavedPDFs()" style="width: auto; padding: 6px 12px; font-size: 13px;">
+                        <option value="recent">Recent Uploads</option>
+                        <option value="oldest">Oldest Uploads</option>
+                        <option value="subject">By Subject</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- PDF Library Cards Grid -->
+            <div id="savedPdfGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
+                <!-- Dynamically Populated -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Page Footer -->
+    <footer class="saas-footer">
+        <div class="container">
+            <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+                <span>© 2026 Smart Education AI. All rights reserved.</span>
+                <span>Learn • Practice • Improve • Succeed</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="pdf-study.js"></script>
+</body>
+</html>

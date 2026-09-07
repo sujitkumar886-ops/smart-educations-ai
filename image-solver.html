@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Image Question Solver | Smart Education AI</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="auth-guard.js"></script>
+    <script src="theme.js"></script>
+    <script src="auth.js"></script>
+    <style>
+        /* Image Solver Page Specific Glassmorphism & Controls */
+        .image-dropzone {
+            border: 2px dashed rgba(99, 102, 241, 0.4);
+            border-radius: 20px;
+            padding: 40px 25px;
+            text-align: center;
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(12px);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .image-dropzone:hover, .image-dropzone.dragover {
+            border-color: #818cf8;
+            background: rgba(99, 102, 241, 0.12);
+            box-shadow: 0 0 25px rgba(99, 102, 241, 0.25);
+        }
+        .mode-tab-bar {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            margin-bottom: 22px;
+            scrollbar-width: thin;
+        }
+        .mode-tab-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #94a3b8;
+            padding: 9px 16px;
+            border-radius: 12px;
+            font-size: 13.5px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .mode-tab-btn:hover {
+            color: #f8fafc;
+            background: rgba(255, 255, 255, 0.08);
+        }
+        .mode-tab-btn.active {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            color: #ffffff;
+            border-color: #818cf8;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.35);
+        }
+        .mode-tab-panel {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .mode-tab-panel.active {
+            display: block;
+        }
+        .preview-img-container {
+            position: relative;
+            max-width: 100%;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(15, 23, 42, 0.8);
+            text-align: center;
+        }
+        .preview-img-container img {
+            max-width: 100%;
+            max-height: 320px;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
+        .q-num-pill {
+            padding: 6px 14px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #94a3b8;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .q-num-pill.active {
+            background: rgba(99, 102, 241, 0.25);
+            border-color: #818cf8;
+            color: #ffffff;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <!-- 3D Ambient Background Light Orbs -->
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+
+    <!-- Header Navigation -->
+    <header class="dashboard-header">
+        <div class="nav-container">
+            <a href="dashboard.html" class="dashboard-logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                Smart Education AI <span class="badge-tag badge-cs" style="margin-left: 8px;">Vision Solver</span>
+            </a>
+            <div class="nav-links">
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="ai-tutor.html" class="nav-link">AI Tutor</a>
+                <a href="pdf-study.html" class="nav-link">PDF Study AI</a>
+                <a href="image-solver.html" class="nav-link active">Image Solver</a>
+                <a href="notes.html" class="nav-link">Notes</a>
+                <a href="quiz.html" class="nav-link">Quiz</a>
+                <a href="study-planner.html" class="nav-link">Planner</a>
+                <a href="leaderboard.html" class="nav-link">Leaderboard</a>
+            </div>
+            <div class="user-area">
+                <span class="user-greeting" style="color: #94a3b8; font-size: 14px; margin-right: 12px;">Welcome, <strong id="navUserName" style="color: #f8fafc;">Student</strong></span>
+                <button id="themeToggleBtn" class="theme-toggle-btn" title="Toggle Light/Dark Theme">🌙</button>
+                <button id="logoutBtn" class="btn btn-secondary" style="padding: 6px 14px; font-size: 13px;">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 35px; padding-bottom: 60px;">
+        <!-- Page Hero Banner -->
+        <div style="text-align: center; max-width: 720px; margin: 0 auto 30px;">
+            <h1 style="font-size: 32px; font-weight: 800; color: #ffffff; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                <span>🖼️ AI Visual Question Solver</span>
+            </h1>
+            <p style="color: #94a3b8; font-size: 15px; line-height: 1.6;">
+                Snap, upload, or paste any math equation, physics problem, chemistry formula, code screenshot, or diagram. Get step-by-step calculations, beginner analogies, and practice questions instantly.
+            </p>
+        </div>
+
+        <!-- Upload & Preview Card Container -->
+        <div style="max-width: 850px; margin: 0 auto 40px;">
+            <!-- Drag & Drop Upload Zone -->
+            <div id="imageDropzone" class="image-dropzone" onclick="document.getElementById('fileInput').click()">
+                <div style="width: 58px; height: 58px; margin: 0 auto 14px; background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3); border-radius: 18px; display: flex; align-items: center; justify-content: center; color: #818cf8;">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                </div>
+                <h3 style="color: #ffffff; margin-bottom: 6px; font-size: 19px;">Upload, Snap or Paste Question Image</h3>
+                <p style="color: #94a3b8; font-size: 13.5px; margin-bottom: 15px;">Drag & drop image here, paste from clipboard (Ctrl+V), or select file (.jpg, .png, .webp up to 10MB)</p>
+                
+                <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;" onclick="event.stopPropagation()">
+                    <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()" style="padding: 9px 20px; font-size: 13.5px;">📁 Browse File</button>
+                    <button class="btn btn-secondary" onclick="document.getElementById('cameraInput').click()" style="padding: 9px 20px; font-size: 13.5px;">📷 Snap Camera</button>
+                </div>
+                
+                <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" style="display: none;" onchange="handleFileSelect(event)">
+                <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display: none;" onchange="handleFileSelect(event)">
+            </div>
+
+            <!-- Upload Status Progress Bar -->
+            <div id="uploadStatusCard" class="glass-card" style="display: none; padding: 22px; margin-top: 18px; text-align: center;">
+                <div style="font-size: 26px; margin-bottom: 8px;" id="statusIcon">⏳</div>
+                <h4 id="statusTitle" style="color: #f8fafc; margin-bottom: 4px; font-size: 16px;">Analyzing Image...</h4>
+                <p id="statusMessage" style="color: #94a3b8; font-size: 13.5px; margin-bottom: 12px;">Reading question text and running multi-modal vision AI...</p>
+                <div style="width: 100%; height: 7px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden;">
+                    <div id="statusProgressBar" style="width: 30%; height: 100%; background: linear-gradient(90deg, #6366f1, #a855f7); transition: width 0.4s ease;"></div>
+                </div>
+            </div>
+
+            <!-- Selected Image Preview & Configuration Box -->
+            <div id="imagePreviewCard" class="glass-card" style="display: none; padding: 25px; margin-top: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h4 style="color: #f8fafc; margin: 0; font-size: 16px;">Selected Question Image Preview</h4>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn btn-secondary" onclick="openZoomModal()" style="padding: 5px 12px; font-size: 12px;">🔍 Zoom</button>
+                        <button class="btn btn-secondary" onclick="removeSelectedImage()" style="padding: 5px 12px; font-size: 12px; color: #f87171; border-color: rgba(239,68,68,0.3);">🗑️ Remove</button>
+                    </div>
+                </div>
+
+                <div class="preview-img-container" style="margin-bottom: 20px;">
+                    <img id="imagePreviewImg" src="" alt="Question Preview">
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 18px;">
+                    <div>
+                        <label style="color: #94a3b8; font-size: 13px; display: block; margin-bottom: 5px;">Subject:</label>
+                        <select id="subjectSelect" class="auth-input" style="padding: 8px 12px; font-size: 13px;">
+                            <option value="Mathematics">Mathematics</option>
+                            <option value="Physics">Physics</option>
+                            <option value="Chemistry">Chemistry</option>
+                            <option value="Biology">Biology</option>
+                            <option value="Computer Science">Computer Science</option>
+                            <option value="English">English / Literature</option>
+                            <option value="Economics">Economics</option>
+                            <option value="General Science">General Science</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="color: #94a3b8; font-size: 13px; display: block; margin-bottom: 5px;">Solver Mode:</label>
+                        <select id="modeSelect" class="auth-input" style="padding: 8px 12px; font-size: 13px;">
+                            <option value="Step-by-Step">Step-by-Step Solution</option>
+                            <option value="Explain Simply">Explain Simply</option>
+                            <option value="Give Hint">Give Hint Only</option>
+                            <option value="Exam Answer">Academic Exam Answer</option>
+                            <option value="Generate Similar Questions">Generate Practice Questions</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="color: #94a3b8; font-size: 13px; display: block; margin-bottom: 5px;">Explain in Language:</label>
+                        <select id="languageSelect" class="auth-input" style="padding: 8px 12px; font-size: 13px;">
+                            <option value="English">English</option>
+                            <option value="Hindi">Hindi (हिंदी)</option>
+                            <option value="Hinglish">Hinglish</option>
+                        </select>
+                    </div>
+                </div>
+
+                <textarea id="questionTextInput" class="auth-input" placeholder="Optional: Type or fine-tune question statement text..." rows="2" style="margin-bottom: 20px; font-size: 13.5px;"></textarea>
+
+                <button id="solveQuestionBtn" class="btn btn-primary" onclick="solveQuestion()" style="width: 100%; padding: 12px; font-size: 15px; font-weight: 700;">
+                    🚀 Solve Question Step-by-Step
+                </button>
+            </div>
+        </div>
+
+        <!-- Interactive AI Solution Workspace -->
+        <div id="solutionWorkspace" class="glass-card" style="display: none; padding: 30px; margin-bottom: 40px;">
+            <!-- Document & Subject Meta Header -->
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 15px; margin-bottom: 22px; padding-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                <div>
+                    <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 6px;">
+                        <span id="solutionSubjectBadge" class="badge-tag badge-cs">Mathematics</span>
+                        <span id="solutionDifficultyBadge" class="imp-badge imp-medium">Medium</span>
+                        <span id="solutionTypeBadge" style="color: #94a3b8; font-size: 12px;">Numerical</span>
+                    </div>
+                    <h2 id="solutionTitle" style="color: #60a5fa; margin: 0; font-size: 22px;">Visual Question Solution</h2>
+                </div>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button class="btn btn-primary" onclick="saveSolutionToNotes()" style="padding: 7px 15px; font-size: 13px;">💾 Save to Notes</button>
+                    <button class="btn btn-secondary" onclick="printSolutionContent()" style="padding: 7px 15px; font-size: 13px;">🖨️ Print</button>
+                    <button class="btn btn-secondary" onclick="closeSolutionWorkspace()" style="padding: 7px 15px; font-size: 13px;">← Close</button>
+                    <button class="btn btn-secondary" onclick="deleteCurrentSolution()" style="padding: 7px 15px; font-size: 13px; color: #f87171; border-color: rgba(239,68,68,0.4);">🗑️ Delete</button>
+                </div>
+            </div>
+
+            <!-- Multi-Question Selector Banner (if image contained multiple questions) -->
+            <div id="multiQuestionSelector" style="display: none; margin-bottom: 20px; padding: 14px; background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.3); border-radius: 14px;">
+                <span style="color: #818cf8; font-size: 13px; font-weight: 700; display: block; margin-bottom: 8px;">Multiple Questions Detected in Image:</span>
+                <div id="questionPillsContainer" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
+            </div>
+
+            <!-- Blurry / Unreadable Image Alert Banner -->
+            <div id="blurryWarningCard" style="display: none; margin-bottom: 20px; padding: 15px 20px; background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.4); border-radius: 14px; color: #f87171; font-size: 14px;">
+                ⚠️ <strong>Image Quality Notice:</strong> The question in this image is blurry or difficult to read. Please upload a clearer photo for maximum calculation accuracy.
+            </div>
+
+            <!-- 4 Solution Mode Tab Navigation Bar -->
+            <div class="mode-tab-bar">
+                <button class="mode-tab-btn active" onclick="switchModeTab('stepByStepTab')">📌 Step-by-Step</button>
+                <button class="mode-tab-btn" onclick="switchModeTab('simpleTab')">🧠 Simple Explanation</button>
+                <button class="mode-tab-btn" onclick="switchModeTab('examTab')">🎯 Exam Answer</button>
+                <button class="mode-tab-btn" onclick="switchModeTab('conceptTab')">💡 Concept Explanation</button>
+            </div>
+
+            <!-- Panel 1: Step-by-Step Mode -->
+            <div id="stepByStepTab" class="mode-tab-panel active">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; margin-bottom: 20px;">
+                    <div class="glass-card" style="padding: 18px;">
+                        <h5 style="color: #818cf8; margin-top: 0; margin-bottom: 8px; font-size: 14px;">📋 Given Parameters</h5>
+                        <p id="givenText" style="color: #e2e8f0; font-size: 14px; margin: 0; line-height: 1.6;">-</p>
+                    </div>
+                    <div class="glass-card" style="padding: 18px;">
+                        <h5 style="color: #a855f7; margin-top: 0; margin-bottom: 8px; font-size: 14px;">🎯 Required Target</h5>
+                        <p id="requiredText" style="color: #e2e8f0; font-size: 14px; margin: 0; line-height: 1.6;">-</p>
+                    </div>
+                    <div class="glass-card" style="padding: 18px; grid-column: 1 / -1;">
+                        <h5 style="color: #34d399; margin-top: 0; margin-bottom: 8px; font-size: 14px;">⚡ Formula & Theorem</h5>
+                        <p id="formulaText" style="color: #e2e8f0; font-size: 14px; margin: 0; line-height: 1.6; font-family: monospace;">-</p>
+                    </div>
+                </div>
+
+                <div class="glass-card" style="padding: 22px; margin-bottom: 20px;">
+                    <h4 style="color: #60a5fa; margin-top: 0; margin-bottom: 14px;">🔢 Detailed Calculation Steps</h4>
+                    <div id="stepsListContainer" style="color: #cbd5e1; line-height: 1.7; font-size: 14.5px;"></div>
+                </div>
+
+                <div class="glass-card" style="padding: 20px; background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3);">
+                    <h4 style="color: #34d399; margin-top: 0; margin-bottom: 6px; font-size: 16px;">✅ Final Solution Answer</h4>
+                    <div id="finalAnswerBox" style="color: #ffffff; font-size: 17px; font-weight: 700;">-</div>
+                </div>
+            </div>
+
+            <!-- Panel 2: Simple Explanation Mode -->
+            <div id="simpleTab" class="mode-tab-panel">
+                <div style="max-width: 750px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px;">
+                    <div class="glass-card" style="padding: 22px;">
+                        <h4 style="color: #60a5fa; margin-top: 0; margin-bottom: 10px;">💡 Beginner-Friendly Breakdown</h4>
+                        <p id="simpleBreakdownText" style="color: #cbd5e1; line-height: 1.7; font-size: 15px; margin: 0;">-</p>
+                    </div>
+                    <div class="glass-card" style="padding: 22px;">
+                        <h4 style="color: #fbbf24; margin-top: 0; margin-bottom: 10px;">🌍 Real-World Analogy</h4>
+                        <p id="simpleAnalogyText" style="color: #cbd5e1; line-height: 1.7; font-size: 15px; margin: 0;">-</p>
+                    </div>
+                    <div class="glass-card" style="padding: 22px; background: rgba(99,102,241,0.12);">
+                        <h4 style="color: #818cf8; margin-top: 0; margin-bottom: 8px;">📝 Core Takeaway</h4>
+                        <p id="simpleTakeawayText" style="color: #ffffff; font-size: 15px; font-weight: 600; margin: 0;">-</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel 3: Exam Answer Mode -->
+            <div id="examTab" class="mode-tab-panel">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h3 style="color: #f8fafc; margin: 0; font-size: 17px;">Academic Exam Reference Answer</h3>
+                    <button class="btn btn-secondary" onclick="copyExamAnswer()" style="padding: 6px 14px; font-size: 12.5px;">📋 Copy Answer</button>
+                </div>
+                <div id="examAnswerContainer" style="color: #e2e8f0; line-height: 1.7; font-size: 14.5px; white-space: pre-wrap; background: rgba(15,23,42,0.6); padding: 25px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08);">
+                    Loading exam answer...
+                </div>
+            </div>
+
+            <!-- Panel 4: Concept Explanation Mode -->
+            <div id="conceptTab" class="mode-tab-panel">
+                <div class="glass-card" style="padding: 25px; max-width: 750px; margin: 0 auto;">
+                    <span class="badge-tag badge-cs" style="margin-bottom: 10px; display: inline-block;">Theory Concept</span>
+                    <h3 id="conceptNameText" style="color: #a855f7; margin: 0 0 12px 0; font-size: 20px;">Underlying Principle</h3>
+                    <p id="conceptBreakdownText" style="color: #cbd5e1; line-height: 1.7; font-size: 15px; margin: 0; white-space: pre-wrap;">-</p>
+                </div>
+            </div>
+
+            <!-- Code or Diagram Analysis Card (Rendered if detected in image) -->
+            <div id="specialAnalysisCard" class="glass-card" style="display: none; padding: 22px; margin-top: 25px;">
+                <h4 id="specialAnalysisTitle" style="color: #34d399; margin-top: 0; margin-bottom: 10px;">💻 Code / Diagram Inspection</h4>
+                <div id="specialAnalysisContent" style="color: #cbd5e1; line-height: 1.7; font-size: 14px; white-space: pre-wrap;"></div>
+            </div>
+
+            <!-- Practice Similar Questions Widget -->
+            <div style="margin-top: 35px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 25px;">
+                <h3 style="color: #f8fafc; margin-bottom: 15px; font-size: 19px; display: flex; align-items: center; gap: 8px;">
+                    <span>🎯 Practice Similar Questions</span>
+                </h3>
+                <div id="similarQuestionsContainer" style="display: flex; flex-direction: column; gap: 16px;"></div>
+            </div>
+
+            <!-- Grounded Follow-up AI Chat Widget -->
+            <div style="margin-top: 35px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 25px;">
+                <h3 style="color: #f8fafc; margin-bottom: 15px; font-size: 19px;">💬 Follow-Up Question Chat</h3>
+                <div style="max-width: 750px;">
+                    <div id="followupChatMessages" style="min-height: 180px; max-height: 320px; overflow-y: auto; padding: 18px; background: rgba(15,23,42,0.6); border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); margin-bottom: 12px; display: flex; flex-direction: column; gap: 12px;">
+                        <div style="background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3); color: #cbd5e1; padding: 12px 16px; border-radius: 14px; font-size: 13.5px; line-height: 1.6;">
+                            🤖 <strong>Question Assistant:</strong> Ask any follow-up question about this solution (e.g. "Why did you use this formula?", "Explain step 2 in detail").
+                        </div>
+                    </div>
+
+                    <!-- Quick Follow-up Chips -->
+                    <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 10px;">
+                        <button class="btn btn-secondary" onclick="askFollowupQuick('Why is this formula used?')" style="font-size: 12px; padding: 4px 10px; white-space: nowrap;">❓ Why?</button>
+                        <button class="btn btn-secondary" onclick="askFollowupQuick('Explain step 2 in detail')" style="font-size: 12px; padding: 4px 10px; white-space: nowrap;">🔢 Explain Step 2</button>
+                        <button class="btn btn-secondary" onclick="askFollowupQuick('Explain this more simply with an analogy')" style="font-size: 12px; padding: 4px 10px; white-space: nowrap;">💡 Explain More Simply</button>
+                        <button class="btn btn-secondary" onclick="askFollowupQuick('Is there an alternative solving method?')" style="font-size: 12px; padding: 4px 10px; white-space: nowrap;">⚡ Alternative Method</button>
+                        <button class="btn btn-secondary" onclick="askFollowupQuick('Give me another similar practice question')" style="font-size: 12px; padding: 4px 10px; white-space: nowrap;">🎯 Similar Question</button>
+                    </div>
+
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="followupInput" class="auth-input" placeholder="Ask follow-up question about this solution..." onkeypress="if(event.key==='Enter') sendFollowupQuestion()">
+                        <button class="btn btn-primary" onclick="sendFollowupQuestion()" style="padding: 10px 22px; font-size: 14px; white-space: nowrap;">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Saved Solved Questions Library ("My Solved Questions") -->
+        <div style="max-width: 1100px; margin: 0 auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
+                <h2 style="color: #ffffff; margin: 0; font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 10px;">
+                    <span>📚 My Solved Questions Library</span>
+                </h2>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                    <input type="text" id="searchHistoryInput" class="auth-input" placeholder="Search solved questions..." onkeyup="filterHistoryGrid()" style="width: 220px; padding: 6px 12px; font-size: 13px;">
+                    <select id="sortHistorySelect" class="auth-input" onchange="filterHistoryGrid()" style="width: auto; padding: 6px 12px; font-size: 13px;">
+                        <option value="recent">Recent Solutions</option>
+                        <option value="oldest">Oldest Solutions</option>
+                        <option value="subject">By Subject</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- History Grid -->
+            <div id="historyGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 20px;">
+                <!-- Dynamically Populated -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Zoom Image Modal -->
+    <div id="zoomModal" style="display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); align-items: center; justify-content: center; padding: 20px;" onclick="closeZoomModal()">
+        <img id="zoomModalImg" src="" alt="Enlarged Image" style="max-width: 90vw; max-height: 90vh; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2);">
+    </div>
+
+    <!-- Page Footer -->
+    <footer class="saas-footer">
+        <div class="container">
+            <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+                <span>© 2026 Smart Education AI. All rights reserved.</span>
+                <span>Learn • Practice • Improve • Succeed</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="image-solver.js"></script>
+</body>
+</html>

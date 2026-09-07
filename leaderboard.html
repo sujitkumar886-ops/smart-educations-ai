@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XP Leaderboard & Achievements | Smart Education AI</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="auth-guard.js"></script>
+    <style>
+        .leaderboard-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .leaderboard-table th, .leaderboard-table td { padding: 14px 18px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .leaderboard-table th { color: #60a5fa; font-size: 13px; text-transform: uppercase; font-weight: 700; }
+        .leaderboard-table td { color: #f1f5f9; font-size: 15px; }
+    </style>
+</head>
+<body>
+    <!-- 3D Ambient Background Light Orbs -->
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+
+    <header class="dashboard-header">
+        <div class="nav-container">
+            <a href="dashboard.html" class="dashboard-logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                Smart Education AI <span class="badge-tag badge-cs" style="margin-left: 8px;">Leaderboard</span>
+            </a>
+            <div class="user-area">
+                <a href="dashboard.html" class="back-dashboard">← Dashboard</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 40px; padding-bottom: 60px;">
+        <div style="text-align: center; max-width: 650px; margin: 0 auto 35px;">
+            <h1>🏆 Global Leaderboard & Achievements</h1>
+            <p>Earn XP by practicing quizzes, completing daily goals, and maintaining study streaks.</p>
+        </div>
+
+        <div style="max-width: 950px; margin: auto; display: flex; flex-direction: column; gap: 25px;">
+            <!-- Current User Gamification Status -->
+            <div class="glass-card" style="padding: 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px;">
+                <div>
+                    <h3 style="color: #cbd5e1; margin-bottom: 4px; font-size: 15px;">My Gamification Rank & Level</h3>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <span id="userXpDisplay" style="color: #60a5fa; font-size: 28px; font-weight: 800;">0 XP</span>
+                        <span id="userLevelBadge" class="badge-tag badge-cs" style="font-size: 14px;">Level 1</span>
+                    </div>
+                </div>
+                <div id="userBadgesList" style="display: flex; gap: 8px; flex-wrap: wrap;"></div>
+            </div>
+
+            <!-- Leaderboard Table -->
+            <div class="glass-card" style="padding: 28px;">
+                <h2 style="color: #fff; margin-top: 0; margin-bottom: 15px; font-size: 20px;">Top Ranked Scholars</h2>
+                <div style="overflow-x: auto;">
+                    <table class="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Student Name</th>
+                                <th>Level</th>
+                                <th>Total XP</th>
+                                <th>Badges</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboardBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="saas-footer">
+        <div class="container">
+            <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+                <span>© 2026 Smart Education AI. All rights reserved.</span>
+                <span>Learn • Practice • Improve • Succeed</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="leaderboard.js"></script>
+</body>
+</html>

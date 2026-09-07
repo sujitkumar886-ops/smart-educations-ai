@@ -1,0 +1,471 @@
+[
+  {
+    "id": "admin_001",
+    "name": "System Admin",
+    "email": "admin@smartedu.ai",
+    "password": "AdminPassword123!",
+    "role": "admin",
+    "course": "Administration",
+    "college": "Smart Edu AI Platform",
+    "semester": "N/A",
+    "xp": 1000,
+    "level": 10,
+    "badges": [
+      "System Admin 🛡️",
+      "Platform Operator ⚙️"
+    ],
+    "createdAt": "2026-09-07T08:02:08.074Z"
+  },
+  {
+    "id": "1786390334453",
+    "name": "sujit kumar",
+    "email": "suranjansurya@gmail.com",
+    "password": "SM88640276@8864",
+    "course": "B.Tech",
+    "college": "PPSU",
+    "semester": "3rd"
+  },
+  {
+    "id": "1786393525029",
+    "name": "Sujit Sexana",
+    "email": "sujitsexana@gmail.com",
+    "password": "SM88640276@8864",
+    "course": "B.Tech",
+    "college": "PPSU",
+    "semester": "3rd",
+    "role": "student"
+  },
+  {
+    "id": "1786503760464",
+    "name": "prince kumar",
+    "email": "pk8898806@gmail.com",
+    "password": "pk4858",
+    "course": "B.Tech",
+    "college": "PPSU",
+    "semester": "3rd"
+  },
+  {
+    "id": "1788531283940",
+    "name": "Alice Tester",
+    "email": "alice@test.com",
+    "password": "password123",
+    "course": "B.Tech CSE",
+    "college": "PPSU",
+    "semester": "4th",
+    "createdAt": "2026-09-04T14:14:43.940Z"
+  },
+  {
+    "id": "1788533425267",
+    "name": "sujit kumar",
+    "email": "sujitsaxena2@gmail.com",
+    "password": "SM88640276@8864",
+    "course": "B.Tech",
+    "college": "PPSU",
+    "semester": "3rd",
+    "createdAt": "2026-09-04T14:50:25.267Z",
+    "xp": 40,
+    "level": 1,
+    "badges": [
+      "Perfect Score 🏆"
+    ]
+  },
+  {
+    "id": "1788766939853",
+    "name": "SURANJAN SURYA",
+    "email": "yaduvanshisuranjansurya@gmail.com",
+    "password": "123456",
+    "role": "student",
+    "course": "B.Tech",
+    "college": "PPSU",
+    "semester": "3rd",
+    "xp": 0,
+    "level": 1,
+    "badges": [
+      "Welcome Pioneer 🚀"
+    ],
+    "language": "English",
+    "theme": "dark",
+    "optOutLeaderboard": false,
+    "createdAt": "2026-09-07T07:42:19.853Z"
+  },
+  {
+    "id": "1788769147835",
+    "name": "Security Student",
+    "email": "sec_test_student_1788769147824@smartedu.ai",
+    "password": "StudentPassword123!",
+    "role": "student",
+    "course": "B.Tech",
+    "college": "PPSU",
+    "semester": "3rd",
+    "xp": 0,
+    "level": 1,
+    "badges": [
+      "Welcome Pioneer 🚀"
+    ],
+    "language": "English",
+    "theme": "dark",
+    "optOutLeaderboard": false,
+    "disabled": false,
+    "createdAt": "2026-09-07T08:19:07.835Z"
+  },
+  {
+    "id": "1788769147859",
+    "name": "Student B",
+    "email": "sec_test_b_1788769147857@smartedu.ai",
+    "password": "StudentBPassword123!",
+    "role": "student",
+    "course": "B.Tech",
+    "college": "PPSU",
+    "semester": "3rd",
+    "xp": 0,
+    "level": 1,
+    "badges": [
+      "Welcome Pioneer 🚀"
+    ],
+    "language": "English",
+    "theme": "dark",
+    "optOutLeaderboard": false,
+    "disabled": false,
+    "createdAt": "2026-09-07T08:19:07.859Z"
+  },
+  {
+    "id": "1788769155071",
+    "name": "Security Student",
+    "email": "sec_test_student_1788769155069@smartedu.ai",
+    "password": "StudentPassword123!",
+    "role": "student",
+    "course": "B.Tech",
+    "college": "PPSU",
+    "semester": "3rd",
+    "xp": 0,
+    "level": 1,
+    "badges": [
+      "Welcome Pioneer 🚀"
+    ],
+    "language": "English",
+    "theme": "dark",
+    "optOutLeaderboard": false,
+    "disabled": false,
+    "createdAt": "2026-09-07T08:19:15.071Z"
+  },
+  {
+    "id": "1788769885285",
+    "name": "PDF Student A",
+    "email": "pdf_test_a_1788769885249@smartedu.ai",
+    "password": "Password123!",
+    "role": "student",
+    "course": "B.Tech",
+    "college": "PPSU",
+    "semester": "3rd",
+    "xp": 0,
+    "level": 1,
+    "badges": [
+      "Welcome Pioneer 🚀"
+    ],
+    "language": "English",
+    "theme": "dark",
+    "optOutLeaderboard": false,
+    "disabled": false,
+    "createdAt": "2026-09-07T08:31:25.285Z"
+  },
+  {
+    "id": "1788769885295",
+    "name": "PDF Student B",
+    "email": "pdf_test_b_1788769885249@smartedu.ai",
+    "password": "Password123!",
+    "role": "student",
+    "course": "B.Tech",
+    "college": "PPSU",
+    "semester": "3rd",
+    "xp": 0,
+    "level": 1,
+    "badges": [
+      "Welcome Pioneer 🚀"
+    ],
+    "language": "English",
+    "theme": "dark",
+    "optOutLeaderboard": false,
+    "disabled": false,
+    "createdAt": "2026-09-07T08:31:25.295Z"
+  },
+  {
+    "id": "1788770194488",
+    "name": "Security Student",
+    "email": "sec_test_student_1788770194484@smartedu.ai",
+    "password": "StudentPassword123!",
+    "role": "student",
+    "course": "B.Tech",
+    "college": "PPSU",
+    "semester": "3rd",
+    "xp": 0,
+    "level": 1,
+    "badges": [
+      "Welcome Pioneer 🚀"
+    ],
+    "language": "English",
+    "theme": "dark",
+    "optOutLeaderboard": false,
+    "disabled": false,
+    "createdAt": "2026-09-07T08:36:34.488Z"
+  },
+  {
+    "id": "1788770194533",
+    "name": "Student B",
+    "email": "sec_test_b_1788770194531@smartedu.ai",
+    "password": "StudentBPassword123!",
+    "role": "student",
+    "course": "B.Tech",
+    "college": "PPSU",
+    "semester": "3rd",
+    "xp": 0,
+    "level": 1,
+    "badges": [
+      "Welcome Pioneer 🚀"
+    ],
+    "language": "English",
+    "theme": "dark",
+    "optOutLeaderboard": false,
+    "disabled": false,
+    "createdAt": "2026-09-07T08:36:34.533Z"
+  },
+  {
+    "id": "1788770497019",
+    "name": "Image Student A",
+    "email": "img_test_a_1788770496992@smartedu.ai",
+    "password": "Password123!",
+    "role": "student",
+    "course": "B.Tech",
+    "college": "PPSU",
+    "semester": "3rd",
+    "xp": 0,
+    "level": 1,
+    "badges": [
+      "Welcome Pioneer 🚀"
+    ],
+    "language": "English",
+    "theme": "dark",
+    "optOutLeaderboard": false,
+    "disabled": false,
+    "createdAt": "2026-09-07T08:41:37.019Z"
+  },
+  {
+    "id": "1788770497026",
+    "name": "Image Student B",
+    "email": "img_test_b_1788770496992@smartedu.ai",
+    "password": "Password123!",
+    "role": "student",
+    "course": "B.Tech",
+    "college": "PPSU",
+    "semester": "3rd",
+    "xp": 0,
+    "level": 1,
+    "badges": [
+      "Welcome Pioneer 🚀"
+    ],
+    "language": "English",
+    "theme": "dark",
+    "optOutLeaderboard": false,
+    "disabled": false,
+    "createdAt": "2026-09-07T08:41:37.026Z"
+  },
+  {
+    "id": "1788770529159",
+    "name": "PDF Student A",
+    "email": "pdf_test_a_1788770529132@smartedu.ai",
+    "password": "Password123!",
+    "role": "student",
+    "course": "B.Tech",
+    "college": "PPSU",
+    "semester": "3rd",
+    "xp": 0,
+    "level": 1,
+    "badges": [
+      "Welcome Pioneer 🚀"
+    ],
+    "language": "English",
+    "theme": "dark",
+    "optOutLeaderboard": false,
+    "disabled": false,
+    "createdAt": "2026-09-07T08:42:09.159Z"
+  },
+  {
+    "id": "1788770529165",
+    "name": "PDF Student B",
+    "email": "pdf_test_b_1788770529132@smartedu.ai",
+    "password": "Password123!",
+    "role": "student",
+    "course": "B.Tech",
+    "college": "PPSU",
+    "semester": "3rd",
+    "xp": 0,
+    "level": 1,
+    "badges": [
+      "Welcome Pioneer 🚀"
+    ],
+    "language": "English",
+    "theme": "dark",
+    "optOutLeaderboard": false,
+    "disabled": false,
+    "createdAt": "2026-09-07T08:42:09.165Z"
+  },
+  {
+    "id": "1788770546234",
+    "name": "Security Student",
+    "email": "sec_test_student_1788770546233@smartedu.ai",
+    "password": "StudentPassword123!",
+    "role": "student",
+    "course": "B.Tech",
+    "college": "PPSU",
+    "semester": "3rd",
+    "xp": 0,
+    "level": 1,
+    "badges": [
+      "Welcome Pioneer 🚀"
+    ],
+    "language": "English",
+    "theme": "dark",
+    "optOutLeaderboard": false,
+    "disabled": false,
+    "createdAt": "2026-09-07T08:42:26.234Z"
+  },
+  {
+    "id": "1788770546258",
+    "name": "Student B",
+    "email": "sec_test_b_1788770546256@smartedu.ai",
+    "password": "StudentBPassword123!",
+    "role": "student",
+    "course": "B.Tech",
+    "college": "PPSU",
+    "semester": "3rd",
+    "xp": 0,
+    "level": 1,
+    "badges": [
+      "Welcome Pioneer 🚀"
+    ],
+    "language": "English",
+    "theme": "dark",
+    "optOutLeaderboard": false,
+    "disabled": false,
+    "createdAt": "2026-09-07T08:42:26.258Z"
+  },
+  {
+    "id": "1788770609538",
+    "name": "Image Student A",
+    "email": "img_test_a_1788770609514@smartedu.ai",
+    "password": "Password123!",
+    "role": "student",
+    "course": "B.Tech",
+    "college": "PPSU",
+    "semester": "3rd",
+    "xp": 0,
+    "level": 1,
+    "badges": [
+      "Welcome Pioneer 🚀"
+    ],
+    "language": "English",
+    "theme": "dark",
+    "optOutLeaderboard": false,
+    "disabled": false,
+    "createdAt": "2026-09-07T08:43:29.538Z"
+  },
+  {
+    "id": "1788770609544",
+    "name": "Image Student B",
+    "email": "img_test_b_1788770609514@smartedu.ai",
+    "password": "Password123!",
+    "role": "student",
+    "course": "B.Tech",
+    "college": "PPSU",
+    "semester": "3rd",
+    "xp": 0,
+    "level": 1,
+    "badges": [
+      "Welcome Pioneer 🚀"
+    ],
+    "language": "English",
+    "theme": "dark",
+    "optOutLeaderboard": false,
+    "disabled": false,
+    "createdAt": "2026-09-07T08:43:29.544Z"
+  },
+  {
+    "id": "1788770627814",
+    "name": "Security Student",
+    "email": "sec_test_student_1788770627812@smartedu.ai",
+    "password": "StudentPassword123!",
+    "role": "student",
+    "course": "B.Tech",
+    "college": "PPSU",
+    "semester": "3rd",
+    "xp": 0,
+    "level": 1,
+    "badges": [
+      "Welcome Pioneer 🚀"
+    ],
+    "language": "English",
+    "theme": "dark",
+    "optOutLeaderboard": false,
+    "disabled": false,
+    "createdAt": "2026-09-07T08:43:47.814Z"
+  },
+  {
+    "id": "1788770627834",
+    "name": "Student B",
+    "email": "sec_test_b_1788770627832@smartedu.ai",
+    "password": "StudentBPassword123!",
+    "role": "student",
+    "course": "B.Tech",
+    "college": "PPSU",
+    "semester": "3rd",
+    "xp": 0,
+    "level": 1,
+    "badges": [
+      "Welcome Pioneer 🚀"
+    ],
+    "language": "English",
+    "theme": "dark",
+    "optOutLeaderboard": false,
+    "disabled": false,
+    "createdAt": "2026-09-07T08:43:47.834Z"
+  },
+  {
+    "id": "1788770638617",
+    "name": "PDF Student A",
+    "email": "pdf_test_a_1788770638589@smartedu.ai",
+    "password": "Password123!",
+    "role": "student",
+    "course": "B.Tech",
+    "college": "PPSU",
+    "semester": "3rd",
+    "xp": 0,
+    "level": 1,
+    "badges": [
+      "Welcome Pioneer 🚀"
+    ],
+    "language": "English",
+    "theme": "dark",
+    "optOutLeaderboard": false,
+    "disabled": false,
+    "createdAt": "2026-09-07T08:43:58.617Z"
+  },
+  {
+    "id": "1788770638625",
+    "name": "PDF Student B",
+    "email": "pdf_test_b_1788770638589@smartedu.ai",
+    "password": "Password123!",
+    "role": "student",
+    "course": "B.Tech",
+    "college": "PPSU",
+    "semester": "3rd",
+    "xp": 0,
+    "level": 1,
+    "badges": [
+      "Welcome Pioneer 🚀"
+    ],
+    "language": "English",
+    "theme": "dark",
+    "optOutLeaderboard": false,
+    "disabled": false,
+    "createdAt": "2026-09-07T08:43:58.625Z"
+  }
+]

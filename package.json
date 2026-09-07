@@ -1,0 +1,20 @@
+{
+  "name": "smart-education-ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Smart Education AI study assistant powered by Google Gemini",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^5.0.0",
+    "pdf-parse": "^2.4.5"
+  }
+}

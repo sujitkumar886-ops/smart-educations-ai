@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Schedule Planner | Smart Education AI</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="auth-guard.js"></script>
+    <style>
+        .planner-form-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1.5fr 1fr 1fr 1fr 0.8fr 1fr;
+            gap: 12px;
+        }
+        @media (max-width: 900px) {
+            .planner-form-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (max-width: 600px) {
+            .planner-form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 3D Ambient Background Light Orbs -->
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+
+    <header class="dashboard-header">
+        <div class="nav-container">
+            <a href="dashboard.html" class="dashboard-logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                Smart Education AI <span class="badge-tag badge-cs" style="margin-left: 8px;">Study Planner</span>
+            </a>
+            <div class="user-area">
+                <a href="dashboard.html" class="back-dashboard">← Dashboard</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 40px; padding-bottom: 60px;">
+        <div style="text-align: center; max-width: 650px; margin: 0 auto 35px;">
+            <h1>📅 Study Schedule Planner</h1>
+            <p>Schedule, prioritize, and track your daily study tasks effectively.</p>
+        </div>
+
+        <section class="glass-card" style="max-width: 1000px; margin: 0 auto 30px; padding: 30px;">
+            <h2 style="margin-top: 0; margin-bottom: 18px; font-size: 20px; color: #ffffff;">➕ Schedule New Study Task</h2>
+            <form id="plannerForm" class="planner-form-grid">
+                <input type="text" id="subjectInput" placeholder="Subject (e.g. DSA)" required>
+                <input type="text" id="topicInput" placeholder="Topic (e.g. Binary Search)" required>
+                <select id="priorityInput">
+                    <option value="High">Priority: High</option>
+                    <option value="Medium" selected>Priority: Med</option>
+                    <option value="Low">Priority: Low</option>
+                </select>
+                <input type="date" id="dateInput">
+                <input type="time" id="timeInput">
+                <input type="number" id="durationInput" placeholder="Mins" min="1" value="45">
+                <button type="submit" class="ask-btn">+ Add Task</button>
+            </form>
+        </section>
+
+        <section class="glass-card" style="max-width: 1000px; margin: auto; padding: 30px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h2 style="margin: 0; font-size: 20px; color: #ffffff;">📚 My Scheduled Tasks</h2>
+                <span id="plannerProgressBadge" class="badge-tag badge-cs" style="font-size: 13px;">0% Completed</span>
+            </div>
+            <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; margin-bottom: 25px;">
+                <div id="plannerProgressBar" style="width: 0%; height: 100%; background: linear-gradient(90deg, #4f46e5, #60a5fa); transition: width 0.3s;"></div>
+            </div>
+
+            <div id="plannerList"></div>
+        </section>
+    </main>
+
+    <footer class="saas-footer">
+        <div class="container">
+            <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+                <span>© 2026 Smart Education AI. All rights reserved.</span>
+                <span>Learn • Practice • Improve • Succeed</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="planner.js"></script>
+</body>
+</html>

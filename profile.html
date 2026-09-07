@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | Smart Education AI</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="auth-guard.js"></script>
+</head>
+<body>
+    <!-- 3D Ambient Background Light Orbs -->
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+
+    <header class="dashboard-header">
+        <div class="nav-container">
+            <a href="dashboard.html" class="dashboard-logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                Smart Education AI <span class="badge-tag badge-cs" style="margin-left: 8px;">My Profile</span>
+            </a>
+            <div class="user-area">
+                <a href="dashboard.html" class="back-dashboard">← Dashboard</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding-top: 40px; padding-bottom: 60px;">
+        <div style="max-width: 800px; margin: auto;">
+            <div class="glass-card" style="padding: 35px; text-align: center;">
+                <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #4f46e5, #2563eb); color: #fff; font-size: 32px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; box-shadow: 0 10px 25px rgba(37,99,235,0.5);" id="profileAvatarIcon">S</div>
+                <h1 id="profileName" style="color: #fff; font-size: 28px; margin-bottom: 6px;">Student Name</h1>
+                <p id="profileEmail" style="color: #60a5fa; font-size: 15px; margin-bottom: 25px;">student@example.com</p>
+
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; text-align: left; background: rgba(15, 23, 42, 0.6); padding: 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 25px;">
+                    <div>
+                        <span style="color: #94a3b8; font-size: 13px; display: block; margin-bottom: 4px;">Course</span>
+                        <strong id="profileCourse" style="color: #fff; font-size: 16px;">B.Tech</strong>
+                    </div>
+                    <div>
+                        <span style="color: #94a3b8; font-size: 13px; display: block; margin-bottom: 4px;">College</span>
+                        <strong id="profileCollege" style="color: #fff; font-size: 16px;">PPSU</strong>
+                    </div>
+                    <div>
+                        <span style="color: #94a3b8; font-size: 13px; display: block; margin-bottom: 4px;">Semester</span>
+                        <strong id="profileSemester" style="color: #fff; font-size: 16px;">3rd</strong>
+                    </div>
+                </div>
+
+                <button onclick="editProfile()" class="ask-btn">✏️ Edit Profile Information</button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="saas-footer">
+        <div class="container">
+            <div class="footer-bottom" style="border-top: none; padding-top: 0;">
+                <span>© 2026 Smart Education AI. All rights reserved.</span>
+                <span>Learn • Practice • Improve • Succeed</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="profile.js"></script>
+</body>
+</html>

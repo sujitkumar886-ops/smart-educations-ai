@@ -1,0 +1,66 @@
+[
+  {
+    "id": "1788712078253",
+    "studentId": "1788533425267",
+    "title": "sets",
+    "subject": "Mathematics",
+    "category": "Mathematics",
+    "topic": "sets",
+    "language": "English",
+    "noteType": "Detailed Notes",
+    "difficulty": "Beginner",
+    "length": "Detailed",
+    "content": "# sets\n\n## Overview\nSets are one of the most fundamental concepts in modern mathematics. At its core, a **set** is simply a **well-defined collection of distinct objects**. These objects are called **elements** or **members** of the set. The concept of \"well-defined\" means that there is a clear criterion for determining whether an object belongs to the set or not. \"Distinct\" means that each element in a set is unique; no element is repeated.\n\nUnderstanding sets is crucial because they form the bedrock for many advanced mathematical topics, including logic, functions, probability, and even computer science. From categorizing items in a grocery store to organizing data in a database, the principles of sets are applied widely in everyday life and various scientific disciplines.\n\n## Key Concepts\n\n1.  **Elements and Notation:**\n    *   **Elements (Members):** The objects contained within a set.\n    *   **Notation:** Sets are typically denoted by capital letters (e.g., A, B, C), and their elements are enclosed in curly braces `{}`.\n    *   **Membership:** The symbol `∈` means \"is an element of,\" and `∉` means \"is not an element of.\"\n        *   Example: If `A = {1, 2, 3}`, then `1 ∈ A` but `4 ∉ A`.\n\n2.  **Methods of Representing Sets:**\n    *   **Roster Method (Tabular Form):** Listing all the elements of the set, separated by commas, within curly braces.\n        *   Example: The set of even numbers less than 10 is `E = {2, 4, 6, 8}`.\n        *   For large sets with a clear pattern, ellipses `...` can be used: `N = {1, 2, 3, ..., 100}`.\n    *   **Set-Builder Notation (Rule Method):** Describing the properties that elements must satisfy to be members of the set.\n        *   Format: `{x | P(x)}` or `{x : P(x)}`, read as \"the set of all x such that x has property P.\"\n        *   Example: The set of even numbers less than 10 is `E = {x | x is an even number and x < 10}`.\n        *   Example: The set of natural numbers is `N = {x | x ∈ ℕ}`.\n\n3.  **Types of Sets:**\n    *   **Finite Set:** A set with a countable number of elements.\n        *   Example: `A = {apple, banana, cherry}`.\n    *   **Infinite Set:** A set with an uncountable number of elements.\n        *   Example: The set of all integers `Z = {..., -2, -1, 0, 1, 2, ...}`.\n    *   **Empty Set (Null Set):** A set containing no elements. It is denoted by `∅` or `{}`.\n        *   Example: The set of all even prime numbers greater than 2 is `∅`.\n    *   **Singleton Set:** A set containing exactly one element.\n        *   Example: `S = {5}`.\n    *   **Universal Set (U):** The set of all possible elements relevant to a particular context or discussion. It contains all other sets under consideration as subsets.\n        *   Example: If we are discussing numbers, `U` might be the set of all real numbers.\n\n4.  **Relationships Between Sets:**\n    *   **Equal Sets (`=`):** Two sets A and B are equal if they contain exactly the same elements. Order and repetition do not matter.\n        *   Example: `{1, 2, 3}` and `{3, 1, 2}` are equal sets.\n    *   **Subset (`⊆`):** Set A is a subset of set B if every element of A is also an element of B.\n        *   Example: If `A = {1, 2}` and `B = {1, 2, 3}`, then `A ⊆ B`.\n        *   Every set is a subset of itself (`A ⊆ A`).\n        *   The empty set is a subset of every set (`∅ ⊆ A`).\n    *   **Proper Subset (`⊂`):** Set A is a proper subset of set B if A is a subset of B, and A is not equal to B (meaning B contains at least one element not",
+    "summary": "",
+    "importantPoints": [],
+    "createdAt": "2026-09-06T16:27:58.253Z",
+    "updatedAt": "2026-09-06T16:27:58.253Z",
+    "date": "6/9/2026"
+  },
+  {
+    "id": "1788536514395",
+    "studentId": "1788533425267",
+    "title": "python",
+    "category": "General",
+    "content": "python is a high level language.",
+    "summary": "",
+    "importantPoints": [],
+    "date": "4/9/2026"
+  },
+  {
+    "id": "1788533945845",
+    "studentId": "1788533425267",
+    "title": "java",
+    "content": "java is a high level language.",
+    "date": "4/9/2026",
+    "category": "General"
+  },
+  {
+    "id": "1788531343686",
+    "studentId": "1788531321527",
+    "title": "AI Foundations",
+    "content": "Neural networks process vector inputs.",
+    "date": "4/9/2026"
+  },
+  {
+    "id": "1788531343631",
+    "studentId": "1788531283940",
+    "title": "DSA Trees",
+    "content": "Binary Search Trees have O(log N) operations.",
+    "date": "4/9/2026"
+  },
+  {
+    "id": "1786596679950",
+    "studentId": "1786393525029",
+    "title": "python",
+    "content": "python is a simple language",
+    "date": "13/8/2026"
+  },
+  {
+    "id": "1786512532614",
+    "studentId": "1786503760464",
+    "title": "java",
+    "content": "java is a high level language",
+    "date": "12/8/2026"
+  }
+]

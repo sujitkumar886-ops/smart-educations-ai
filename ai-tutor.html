@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Personal Tutor | Smart Education AI</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="auth-guard.js"></script>
+    <style>
+        /* Dedicated AI Personal Tutor Layout */
+        .tutor-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 20px;
+            max-width: 1250px;
+            margin: 20px auto;
+            min-height: calc(100vh - 120px);
+        }
+        @media (max-width: 900px) {
+            .tutor-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+        /* Sidebar Styling */
+        .tutor-sidebar {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            height: fit-content;
+        }
+        .new-chat-btn {
+            width: 100%;
+            padding: 12px 18px;
+            background: linear-gradient(135deg, #4f46e5, #2563eb);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.35);
+            transition: all 0.3s ease;
+        }
+        .new-chat-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+        }
+        .sidebar-section-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #60a5fa;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .filter-group label {
+            font-size: 12px;
+            color: #cbd5e1;
+        }
+        .filter-group select, .filter-group input {
+            width: 100%;
+            padding: 10px 12px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 13px;
+            outline: none;
+        }
+        .recent-chats-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 280px;
+            overflow-y: auto;
+        }
+        .chat-thread-item {
+            padding: 10px 14px;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            color: #cbd5e1;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+        .chat-thread-item:hover, .chat-thread-item.active {
+            background: rgba(96, 165, 250, 0.2);
+            border-color: #60a5fa;
+            color: #fff;
+        }
+        /* Main Chat Workspace */
+        .tutor-workspace {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 120px);
+            overflow: hidden;
+        }
+        .tutor-workspace-header {
+            padding: 16px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.4);
+        }
+        .clear-btn {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #f87171;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .clear-btn:hover {
+            background: #ef4444;
+            color: #fff;
+        }
+        /* Messages Box */
+        .chat-messages-box {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        /* Empty State */
+        .tutor-empty-state {
+            margin: auto;
+            text-align: center;
+            max-width: 600px;
+            padding: 20px;
+        }
+        .tutor-empty-state h2 {
+            font-size: 26px;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        .tutor-empty-state p {
+            color: #94a3b8;
+            font-size: 15px;
+            margin-bottom: 25px;
+        }
+        .suggestion-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        @media (max-width: 600px) {
+            .suggestion-grid { grid-template-columns: 1fr; }
+        }
+        .suggestion-card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .suggestion-card:hover {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: #6366f1;
+            transform: translateY(-2px);
+        }
+        .suggestion-card h4 {
+            color: #60a5fa;
+            margin: 0 0 4px 0;
+            font-size: 14px;
+        }
+        .suggestion-card p {
+            color: #cbd5e1;
+            margin: 0;
+            font-size: 12px;
+        }
+        /* Chat Messages */
+        .msg-bubble {
+            max-width: 85%;
+            padding: 16px 20px;
+            border-radius: 16px;
+            line-height: 1.6;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .msg-bubble.user {
+            align-self: flex-end;
+            background: linear-gradient(135deg, #4f46e5, #2563eb);
+            color: #ffffff;
+            box-shadow: 0 8px 20px -4px rgba(79, 70, 229, 0.4);
+            border-bottom-right-radius: 4px;
+        }
+        .msg-bubble.ai {
+            align-self: flex-start;
+            background: rgba(30, 41, 59, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #f1f5f9;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-bottom-left-radius: 4px;
+        }
+        .msg-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+        .msg-sender {
+            font-weight: 700;
+        }
+        .user .msg-sender { color: #e0e7ff; }
+        .ai .msg-sender { color: #60a5fa; }
+        .msg-time {
+            color: rgba(255,255,255,0.5);
+            font-size: 11px;
+            margin-left: 10px;
+        }
+        .msg-actions-bar {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+        .action-chip-btn {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: #cbd5e1;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .action-chip-btn:hover {
+            background: rgba(96, 165, 250, 0.25);
+            color: #60a5fa;
+            border-color: #60a5fa;
+        }
+        /* Quick Action Bar */
+        .quick-actions-bar {
+            padding: 10px 20px;
+            background: rgba(15, 23, 42, 0.5);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+        .quick-chip {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #cbd5e1;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .quick-chip:hover {
+            background: rgba(96, 165, 250, 0.2);
+            border-color: #60a5fa;
+            color: #60a5fa;
+        }
+        /* Input Bar */
+        .tutor-input-area {
+            padding: 16px 20px;
+            background: rgba(15, 23, 42, 0.8);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .tutor-input-area textarea {
+            flex: 1;
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: #fff;
+            padding: 12px 16px;
+            font-size: 14px;
+            outline: none;
+            resize: none;
+            font-family: inherit;
+        }
+        .voice-ask-btn {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #f87171;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .voice-ask-btn.listening {
+            background: #ef4444;
+            color: #fff;
+            animation: pulse 1.5s infinite;
+        }
+        .send-msg-btn {
+            background: linear-gradient(135deg, #4f46e5, #2563eb);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .send-msg-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        /* Thinking indicator */
+        .typing-indicator {
+            display: none;
+            padding: 10px 16px;
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 12px;
+            color: #60a5fa;
+            font-size: 13px;
+            align-self: flex-start;
+            margin: 0 24px 10px;
+        }
+        /* Code & Markdown Styles inside AI bubble */
+        .ai pre {
+            background: rgba(10, 15, 30, 0.8);
+            padding: 12px;
+            border-radius: 8px;
+            overflow-x: auto;
+            border: 1px solid rgba(255,255,255,0.1);
+            font-family: monospace;
+            font-size: 13px;
+            color: #38bdf8;
+        }
+        .ai code {
+            background: rgba(255,255,255,0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            color: #f472b6;
+        }
+        .ai h1, .ai h2, .ai h3 {
+            color: #60a5fa;
+            margin: 12px 0 6px 0;
+        }
+        .ai ul, .ai ol {
+            padding-left: 20px;
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- 3D Ambient Background Light Orbs -->
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+
+    <header class="dashboard-header">
+        <a href="dashboard.html" class="dashboard-logo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            Smart Education AI <span class="badge-tag badge-cs" style="margin-left: 8px;">AI Personal Tutor</span>
+        </a>
+        <div class="user-area">
+            <div class="user-badge">
+                <div class="user-avatar" id="userInitial">S</div>
+                <span id="welcomeUserName">Student</span>
+            </div>
+            <a href="dashboard.html" class="back-dashboard">← Dashboard</a>
+        </div>
+    </header>
+
+    <main class="tutor-layout">
+        <!-- Sidebar: Recent Chats & Context Controls -->
+        <aside class="tutor-sidebar">
+            <button class="new-chat-btn" onclick="startNewChat()">➕ Start New Chat</button>
+
+            <!-- Subject & Topic Context Controls -->
+            <div class="filter-group">
+                <div class="sidebar-section-title">🎓 Learning Context</div>
+                <div>
+                    <label>Subject</label>
+                    <select id="contextSubject" onchange="updateContext()">
+                        <option value="General">General / All Subjects 📚</option>
+                        <option value="Computer Science">Computer Science 💻</option>
+                        <option value="Mathematics">Mathematics 📐</option>
+                        <option value="Physics">Physics ⚛️</option>
+                        <option value="DBMS">DBMS & Databases 🗄️</option>
+                        <option value="AI & ML">AI & Machine Learning 🤖</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Specific Topic</label>
+                    <input type="text" id="contextTopic" placeholder="e.g. Binary Search Trees" oninput="updateContext()">
+                </div>
+                <div>
+                    <label>Difficulty Tier</label>
+                    <select id="contextDifficulty" onchange="updateContext()">
+                        <option value="Intermediate">Intermediate 🎯</option>
+                        <option value="Beginner">Beginner 🌱</option>
+                        <option value="Advanced">Advanced 🚀</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Language Response</label>
+                    <select id="contextLanguage" onchange="updateContext()">
+                        <option value="English">🌐 English</option>
+                        <option value="Hindi">🇮🇳 Hindi</option>
+                        <option value="Hinglish">🗣️ Hinglish</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Recent Conversations History -->
+            <div>
+                <div class="sidebar-section-title">📜 Recent Conversations</div>
+                <div id="recentChatsList" class="recent-chats-list">
+                    <p style="font-size: 12px; color: #94a3b8;">Loading history...</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Workspace: Conversation Box & Input -->
+        <section class="tutor-workspace">
+            <div class="tutor-workspace-header">
+                <div>
+                    <h3 style="margin: 0; color: #fff; font-size: 16px;">🤖 AI Personal Tutor</h3>
+                    <span id="activeContextBadge" style="font-size: 12px; color: #60a5fa;">General • Intermediate</span>
+                </div>
+                <button class="clear-btn" onclick="clearCurrentConversation()">🧹 Clear Chat</button>
+            </div>
+
+            <!-- Messages Area -->
+            <div id="chatMessagesBox" class="chat-messages-box">
+                <!-- Empty State Hero -->
+                <div id="emptyState" class="tutor-empty-state">
+                    <div style="font-size: 50px; margin-bottom: 10px;">🤖</div>
+                    <h2 id="emptyStateGreeting">Hello Student 👋</h2>
+                    <p>Your personal 24/7 AI learning companion. Ask any educational question, get step-by-step solutions, or use smart actions below.</p>
+                    <div class="suggestion-grid">
+                        <div class="suggestion-card" onclick="useSuggestion('Explain photosynthesis in simple terms with an easy example.')">
+                            <h4>💡 Explain a Topic Simply</h4>
+                            <p>"Explain photosynthesis using an easy real-world analogy."</p>
+                        </div>
+                        <div class="suggestion-card" onclick="useSuggestion('How do quadratic equations work? Give step-by-step formula explanations.')">
+                            <h4>⚡ Solve Academic Questions</h4>
+                            <p>"How do quadratic equations work? Step-by-step guide."</p>
+                        </div>
+                        <div class="suggestion-card" onclick="useSuggestion('What are the high-yield exam preparation topics for Computer Science?')">
+                            <h4>🎓 Exam Preparation Tips</h4>
+                            <p>"What are the high-yield exam preparation topics?"</p>
+                        </div>
+                        <div class="suggestion-card" onclick="useSuggestion('Create structured revision study notes with overview and definitions for Database Indexing.')">
+                            <h4>📝 Create Revision Notes</h4>
+                            <p>"Generate structured revision study notes."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thinking / Loading Indicator -->
+            <div id="typingIndicator" class="typing-indicator">
+                <span>💭 AI is thinking...</span>
+            </div>
+
+            <!-- Smart Quick Actions Bar -->
+            <div class="quick-actions-bar">
+                <button class="quick-chip" onclick="triggerQuickAction('Explain Simply')">💡 Explain Simply</button>
+                <button class="quick-chip" onclick="triggerQuickAction('Explain in Detail')">🔬 Explain in Detail</button>
+                <button class="quick-chip" onclick="triggerQuickAction('Give Example')">🌟 Give Example</button>
+                <button class="quick-chip" onclick="triggerQuickAction('Important Points')">📌 Important Points</button>
+                <button class="quick-chip" onclick="triggerQuickAction('Exam Preparation')">🎯 Exam Prep</button>
+                <button class="quick-chip" onclick="triggerQuickAction('Generate Quiz')">📝 Generate Quiz</button>
+                <button class="quick-chip" onclick="triggerQuickAction('Create Notes')">📚 Create Notes</button>
+            </div>
+
+            <!-- Input Area -->
+            <div class="tutor-input-area">
+                <textarea id="tutorInput" rows="2" placeholder="Ask your educational question or follow-up (Press Enter to send)..."></textarea>
+                <button id="voiceBtn" class="voice-ask-btn" onclick="toggleVoiceInput()">🎙️ Voice</button>
+                <button id="sendBtn" class="send-msg-btn" onclick="sendMessage()">🚀 Send</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="voice-tutor.js"></script>
+    <script src="ai-tutor.js"></script>
+</body>
+</html>
